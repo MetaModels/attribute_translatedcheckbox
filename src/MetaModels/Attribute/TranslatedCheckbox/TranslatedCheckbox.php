@@ -48,6 +48,7 @@ class TranslatedCheckbox extends TranslatedReference
     public function getAttributeSettingNames()
     {
         return array_merge(parent::getAttributeSettingNames(), array(
+            'mandatory',
             'check_publish',
             'filterable',
             'searchable',
