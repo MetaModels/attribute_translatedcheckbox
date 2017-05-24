@@ -18,32 +18,58 @@
  * @filesource
  */
 
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyFalseCondition;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyTrueCondition;
 use MetaModels\Attribute\Events\CreateAttributeFactoryEvent;
 use MetaModels\Attribute\TranslatedCheckbox\AttributeTypeFactory;
+use MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox;
 use MetaModels\Events\Attribute\TranslatedCheckbox\Listener;
 use MetaModels\Events\Attribute\TranslatedCheckbox\PublishedFilterSettingTypeRenderer;
+use MetaModels\Events\CreatePropertyConditionEvent;
 use MetaModels\Events\MetaModelsBootEvent;
 use MetaModels\Filter\Setting\Events\CreateFilterSettingFactoryEvent;
 use MetaModels\Filter\Setting\Published\TranslatedCheckboxFilterSettingTypeFactory;
 use MetaModels\MetaModelsEvents;
 
-return array(
-    MetaModelsEvents::SUBSYSTEM_BOOT_BACKEND => array(
+return [
+    MetaModelsEvents::SUBSYSTEM_BOOT_BACKEND => [
         function (MetaModelsBootEvent $event) {
             new Listener($event->getServiceContainer());
             new PublishedFilterSettingTypeRenderer($event->getServiceContainer());
         }
-    ),
-    MetaModelsEvents::ATTRIBUTE_FACTORY_CREATE => array(
+    ],
+    MetaModelsEvents::ATTRIBUTE_FACTORY_CREATE => [
         function (CreateAttributeFactoryEvent $event) {
             $factory = $event->getFactory();
             $factory->addTypeFactory(new AttributeTypeFactory());
         }
-    ),
-    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => array(
+    ],
+    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => [
         function (CreateFilterSettingFactoryEvent $event) {
             $factory = $event->getFactory();
             $factory->addTypeFactory(new TranslatedCheckboxFilterSettingTypeFactory());
         }
-    )
-);
+    ],
+    CreatePropertyConditionEvent::NAME => [[
+        function (CreatePropertyConditionEvent $event) {
+            $meta = $event->getData();
+
+            if ('conditionpropertyvalueis' !== $meta['type']) {
+                return;
+            }
+
+            $metaModel = $event->getMetaModel();
+            $attribute = $metaModel->getAttributeById($meta['attr_id']);
+            if (!($attribute instanceof TranslatedCheckbox)) {
+                return;
+            }
+
+            if ((bool) $meta['value']) {
+                $event->setInstance(new PropertyTrueCondition($attribute->getColName()));
+                return;
+            }
+            $event->setInstance(new PropertyFalseCondition($attribute->getColName()));
+        },
+        -10
+    ]]
+];
