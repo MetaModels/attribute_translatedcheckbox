@@ -8,6 +8,6 @@ services:
             - { name: metamodels.attribute_factory }
 
     netzmacht.attribute_translated_checkbox.filter_setting_factory:
-        class: MetaModels\AttributeTranslatedCheckboxBundle\Filter\TranslatedCheckboxFilterSettingTypeFactory
+        class: MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published\TranslatedCheckboxFilterSettingTypeFactory
         tags:
             - { name: metamodels.filter_factory }
