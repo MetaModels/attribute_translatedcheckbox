@@ -71,7 +71,7 @@ class BuildMetaModelOperationsListener
                 );
 
             $extra          = $toggle->getExtra();
-            $extra['icon']  = 'visible.gif';
+            $extra['icon']  = 'visible.svg';
             $extra['class'] = $class;
 
             if ($commands->hasCommandNamed('show')) {
