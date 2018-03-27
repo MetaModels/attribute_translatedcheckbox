@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,7 @@
  * @subpackage AttributeTranslatedCheckbox
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2016 The MetaModels team.
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -75,4 +75,5 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = array
     'exclude'   => true,
     'inputType' => 'checkbox',
     'eval'      => array('tl_class' => 'w50'),
+    'sql'       => 'char(1) NOT NULL default \'\''
 );

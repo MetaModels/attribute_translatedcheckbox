@@ -37,6 +37,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_ignorepublishe
         'alwaysSave'          => true,
         'tl_class'            => 'w50 m12',
     ),
+    'sql'                     => 'char(1) NOT NULL default \'\''
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_allowpreview'] = array
@@ -48,4 +49,5 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_allowpreview']
         'alwaysSave'          => true,
         'tl_class'            => 'w50 m12',
     ),
+    'sql'                     => 'char(1) NOT NULL default \'\''
 );
