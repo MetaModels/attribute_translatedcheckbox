@@ -35,7 +35,7 @@ class PublishedFilterSettingTypeRenderer extends FilterSettingTypeRenderer
      */
     protected function getTypes()
     {
-        return array('translatedcheckbox_published');
+        return ['translatedcheckbox_published'];
     }
 
     /**

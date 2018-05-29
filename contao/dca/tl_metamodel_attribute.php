@@ -26,54 +26,46 @@
 /**
  * Add palette configuration.
  */
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['translatedcheckbox extends _simpleattribute_'] = array
-(
-    '-advanced' => array('isunique'),
-    '+advanced' => array('check_publish')
-);
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['translatedcheckbox extends _simpleattribute_'] = [
+    '-advanced' => ['isunique'],
+    '+advanced' => ['check_publish']
+];
 
 /**
  * Add data provider.
  */
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['dca_config']['data_provider']['tl_metamodel_translatedcheckbox'] = array
-(
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['dca_config']['data_provider']['tl_metamodel_translatedcheckbox'] = [
     'source' => 'tl_metamodel_translatedcheckbox'
-);
+];
 
 /**
  * Add child condition.
  */
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['dca_config']['childCondition'][] = array
-(
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['dca_config']['childCondition'][] = [
     'from'   => 'tl_metamodel_attribute',
     'to'     => 'tl_metamodel_translatedcheckbox',
-    'setOn'  => array
-    (
-        array
-        (
+    'setOn'  => [
+        [
             'to_field'   => 'att_id',
             'from_field' => 'id',
-        ),
-    ),
-    'filter' => array
-    (
-        array
-        (
+        ],
+    ],
+    'filter' => [
+        [
             'local'     => 'att_id',
             'remote'    => 'id',
             'operation' => '=',
-        ),
-    )
-);
+        ],
+    ]
+];
 
 /**
  * Add field configuration.
  */
-$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = array
-(
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'],
     'exclude'   => true,
     'inputType' => 'checkbox',
-    'eval'      => array('tl_class' => 'w50'),
+    'eval'      => ['tl_class' => 'w50'],
     'sql'       => 'char(1) NOT NULL default \'\''
-);
+];

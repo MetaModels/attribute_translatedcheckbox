@@ -44,11 +44,7 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends AttributeTypeFactoryTes
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(
-            'MetaModels\MetaModel',
-            array(),
-            array(array())
-        );
+        $metaModel = $this->getMock('MetaModels\MetaModel', [], [[]]);
 
         $metaModel
             ->expects($this->any())
@@ -75,7 +71,7 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends AttributeTypeFactoryTes
      */
     protected function getAttributeFactories()
     {
-        return array(new AttributeTypeFactory());
+        return [new AttributeTypeFactory()];
     }
 
     /**
@@ -86,10 +82,10 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends AttributeTypeFactoryTes
     public function testCreateSelect()
     {
         $factory   = new AttributeTypeFactory();
-        $values    = array(
+        $values = [
             'force_alias'  => '',
-            'alias_fields' => serialize(array('title'))
-        );
+            'alias_fields' => serialize(['title'])
+        ];
         $attribute = $factory->createInstance(
             $values,
             $this->mockMetaModel('mm_test', 'de', 'en')

@@ -24,7 +24,8 @@
 /**
  * Register the templates
  */
-TemplateLoader::addFiles(array
-(
-    'mm_attr_translatedcheckbox' => 'system/modules/metamodelsattribute_translatedcheckbox/templates',
-));
+TemplateLoader::addFiles(
+    [
+        'mm_attr_translatedcheckbox' => 'system/modules/metamodelsattribute_translatedcheckbox/templates',
+    ]
+);

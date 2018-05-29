@@ -51,13 +51,16 @@ class TranslatedCheckbox extends TranslatedReference
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(parent::getAttributeSettingNames(), array(
-            'mandatory',
-            'check_publish',
-            'filterable',
-            'searchable',
-            'submitOnChange'
-        ));
+        return array_merge(
+            parent::getAttributeSettingNames(),
+            [
+                'mandatory',
+                'check_publish',
+                'filterable',
+                'searchable',
+                'submitOnChange'
+            ]
+        );
     }
 
     /**
@@ -71,7 +74,7 @@ class TranslatedCheckbox extends TranslatedReference
     /**
      * {@inheritDoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef              = parent::getFieldDefinition($arrOverrides);
         $arrFieldDef['inputType'] = 'checkbox';
@@ -93,7 +96,7 @@ class TranslatedCheckbox extends TranslatedReference
             // We have to lock the retrieval to prevent endless recursion.
             $this->doNotFixValues = true;
 
-            $fixedValues = array();
+            $fixedValues = [];
             foreach (array_diff($arrIds, array_keys($arrReturn)) as $itemId) {
                 $arrReturn[$itemId]   = $this->widgetToValue(false, $itemId);
                 $fixedValues[$itemId] = $arrReturn[$itemId];

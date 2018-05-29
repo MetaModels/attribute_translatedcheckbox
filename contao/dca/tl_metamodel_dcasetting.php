@@ -19,16 +19,15 @@
  * @filesource
  */
 
-$GLOBALS['TL_DCA']['tl_metamodel_dcasetting']['metasubselectpalettes']['attr_id']['translatedcheckbox'] = array
-(
-    'presentation' => array(
+$GLOBALS['TL_DCA']['tl_metamodel_dcasetting']['metasubselectpalettes']['attr_id']['translatedcheckbox'] = [
+    'presentation' => [
         'tl_class',
-    ),
-    'functions'  => array(
+    ],
+    'functions'    => [
         'mandatory',
         'submitOnChange'
-    ),
-    'overview' => array(
+    ],
+    'overview'     => [
         'filterable',
-    )
-);
+    ]
+];

@@ -23,10 +23,10 @@
 
 namespace MetaModels\Filter\Setting\Published;
 
-use MetaModels\Filter\Rules\SearchAttribute;
-use MetaModels\Filter\Setting\Simple as MetaModelFilterSetting;
-use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
 use MetaModels\Filter\IFilter as IMetaModelFilter;
+use MetaModels\Filter\Rules\SearchAttribute;
+use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
+use MetaModels\Filter\Setting\Simple as MetaModelFilterSetting;
 
 /**
  * Filter setting to filter for translated checkboxes.
@@ -54,7 +54,7 @@ class TranslatedCheckbox extends MetaModelFilterSetting
             return;
         }
         // Attribute not found, do not return anyting to prevent leaking of items.
-        $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList(array()));
+        $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList([]));
     }
 
     /**
@@ -62,7 +62,7 @@ class TranslatedCheckbox extends MetaModelFilterSetting
      */
     public function getParameters()
     {
-        return ($this->get('check_ignorepublished')) ? array('ignore_published' . $this->get('id')) : array();
+        return ($this->get('check_ignorepublished')) ? ['ignore_published' . $this->get('id')] : [];
     }
 
     /**
@@ -74,22 +74,22 @@ class TranslatedCheckbox extends MetaModelFilterSetting
     public function getParameterDCA()
     {
         if (!$this->get('check_ignorepublished')) {
-            return array();
+            return [];
         }
 
         $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
 
-        $arrLabel = array();
+        $arrLabel = [];
         foreach ($GLOBALS['TL_LANG']['MSC']['metamodel_filtersetting']['ignore_published'] as $strLabel) {
             $arrLabel[] = sprintf($strLabel, $objAttribute->getName());
         }
 
-        return array(
-            'ignore_published' . $this->get('id') => array
-            (
-                'label' => $arrLabel,
-                'inputType' => 'checkbox',
-            )
-        );
+        return [
+            'ignore_published' . $this->get('id') =>
+                [
+                    'label'     => $arrLabel,
+                    'inputType' => 'checkbox',
+                ]
+        ];
     }
 }

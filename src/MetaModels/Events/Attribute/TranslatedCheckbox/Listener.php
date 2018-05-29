@@ -43,7 +43,7 @@ class Listener extends BaseSubscriber
         $this
             ->addListener(
                 BuildMetaModelOperationsEvent::NAME,
-                array($this, 'handle')
+                [$this, 'handle']
             );
     }
 
@@ -117,7 +117,7 @@ class Listener extends BaseSubscriber
             $activeLanguage
         );
 
-        foreach (array_diff($attribute->getMetaModel()->getAvailableLanguages(), array($activeLanguage)) as $langCode) {
+        foreach (array_diff($attribute->getMetaModel()->getAvailableLanguages(), [$activeLanguage]) as $langCode) {
             $this->generateToggleCommand(
                 $commands,
                 $attribute,
