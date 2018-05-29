@@ -51,7 +51,7 @@ class TranslatedCheckbox extends TranslatedReference
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(
+        return \array_merge(
             parent::getAttributeSettingNames(),
             [
                 'mandatory',
@@ -97,12 +97,12 @@ class TranslatedCheckbox extends TranslatedReference
             $this->doNotFixValues = true;
 
             $fixedValues = [];
-            foreach (array_diff($arrIds, array_keys($arrReturn)) as $itemId) {
+            foreach (\array_diff($arrIds, \array_keys($arrReturn)) as $itemId) {
                 $arrReturn[$itemId]   = $this->widgetToValue(false, $itemId);
                 $fixedValues[$itemId] = $arrReturn[$itemId];
             }
 
-            if (count($fixedValues)) {
+            if (\count($fixedValues)) {
                 $this->setTranslatedDataFor($fixedValues, $strLangCode);
             }
 
@@ -130,7 +130,7 @@ class TranslatedCheckbox extends TranslatedReference
             return false;
         }
 
-        if (count($values) == count($idList)) {
+        if (\count($values) == \count($idList)) {
             return false;
         }
 

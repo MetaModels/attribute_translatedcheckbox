@@ -85,7 +85,7 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends AttributeTypeFactoryTes
         $factory   = new AttributeTypeFactory();
         $values = [
             'force_alias'  => '',
-            'alias_fields' => serialize(['title'])
+            'alias_fields' => \serialize(['title'])
         ];
         $attribute = $factory->createInstance(
             $values,

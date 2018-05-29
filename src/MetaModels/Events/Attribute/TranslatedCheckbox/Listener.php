@@ -75,7 +75,7 @@ class Listener extends BaseSubscriber
                 ->setName($commandName)
                 ->setLabel($GLOBALS['TL_LANG']['MSC']['metamodelattribute_translatedcheckbox']['toggle'][0])
                 ->setDescription(
-                    sprintf(
+                    \sprintf(
                         $GLOBALS['TL_LANG']['MSC']['metamodelattribute_translatedcheckbox']['toggle'][1],
                         $attribute->getName(),
                         $language
@@ -117,7 +117,7 @@ class Listener extends BaseSubscriber
             $activeLanguage
         );
 
-        foreach (array_diff($attribute->getMetaModel()->getAvailableLanguages(), [$activeLanguage]) as $langCode) {
+        foreach (\array_diff($attribute->getMetaModel()->getAvailableLanguages(), [$activeLanguage]) as $langCode) {
             $this->generateToggleCommand(
                 $commands,
                 $attribute,
