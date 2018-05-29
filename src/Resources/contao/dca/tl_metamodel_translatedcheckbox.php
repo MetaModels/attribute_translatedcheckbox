@@ -13,40 +13,44 @@
  * @package    MetaModels
  * @subpackage AttributeTranslatedCheckbox
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2018 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0
+ * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
+/**
+ * Table tl_metamodel_translatedcheckbox
+ */
 $GLOBALS['TL_DCA']['tl_metamodel_translatedcheckbox'] = [
-    'config'                      => [
-        'sql'                     => [
-            'keys'                => [
-                'id'              => 'primary',
-                'att_id,value'    => 'index',
-                'att_id,langcode' => 'index',
-                'att_id,item_id'  => 'index',
-            ],
-        ],
+    // Config
+    'config' => [
+        'sql' => [
+            'keys' => [
+                'id'                            => 'primary',
+                'att_id,value,langcode,item_id' => 'index'
+            ]
+        ]
     ],
-    'fields'                      => [
-        'id'                      => [
-            'sql'                 => 'int(10) unsigned NOT NULL auto_increment',
+    // Fields
+    'fields' => [
+        'id' => [
+            'sql'                     => 'int(10) unsigned NOT NULL auto_increment'
         ],
-        'tstamp'                  => [
-            'sql'                 => 'int(10) unsigned NOT NULL default \'0\'',
+        'tstamp' => [
+            'sql'                     => 'int(10) unsigned NOT NULL default \'0\''
         ],
-        'att_id'                  => [
-            'sql'                 => 'int(10) unsigned NOT NULL default \'0\'',
+        'att_id' => [
+            'sql'                     => 'int(10) unsigned NOT NULL default \'0\''
         ],
-        'item_id'                 => [
-            'sql'                 => 'int(10) unsigned NOT NULL default \'0\'',
+        'item_id' => [
+            'sql'                     => 'int(10) unsigned NOT NULL default \'0\''
         ],
-        'langcode'                => [
-            'sql'                 => 'varchar(5) NOT NULL default \'\'',
+        'langcode' => [
+            'sql'                     => 'varchar(5) NOT NULL default \'\''
         ],
-        'value'                   => [
-            'sql'                 => 'char(1) NOT NULL default \'\'',
-        ],
-    ],
+        'value' => [
+            'sql'                     => 'char(1) NOT NULL default \'\''
+        ]
+    ]
 ];

@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,8 +15,9 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -51,13 +52,16 @@ class TranslatedCheckbox extends TranslatedReference
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(parent::getAttributeSettingNames(), array(
-            'mandatory',
-            'check_publish',
-            'filterable',
-            'searchable',
-            'submitOnChange'
-        ));
+        return \array_merge(
+            parent::getAttributeSettingNames(),
+            [
+                'mandatory',
+                'check_publish',
+                'filterable',
+                'searchable',
+                'submitOnChange'
+            ]
+        );
     }
 
     /**
@@ -71,7 +75,7 @@ class TranslatedCheckbox extends TranslatedReference
     /**
      * {@inheritDoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef              = parent::getFieldDefinition($arrOverrides);
         $arrFieldDef['inputType'] = 'checkbox';
@@ -124,7 +128,7 @@ class TranslatedCheckbox extends TranslatedReference
             return false;
         }
 
-        if (count($values) == count($idList)) {
+        if (\count($values) == \count($idList)) {
             return false;
         }
 

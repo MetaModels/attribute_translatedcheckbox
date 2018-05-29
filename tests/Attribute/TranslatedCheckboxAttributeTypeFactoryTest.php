@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,8 +14,9 @@
  * @subpackage Tests
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -27,6 +28,7 @@ use MetaModels\AttributeTranslatedCheckboxBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeTranslatedCheckboxBundle\Attribute\TranslatedCheckbox;
 use MetaModels\IMetaModel;
 use PHPUnit\Framework\TestCase;
+use MetaModels\MetaModel;
 
 /**
  * Test the attribute factory.
@@ -46,7 +48,7 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends TestCase
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
+        $metaModel = $this->getMockBuilder(MetaModel::class)->setMethods([])->setConstructorArgs([[]])->getMock();
 
         $metaModel
             ->expects($this->any())
@@ -85,7 +87,7 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends TestCase
      */
     protected function getAttributeFactories()
     {
-        return array(new AttributeTypeFactory($this->mockConnection()));
+        return [new AttributeTypeFactory($this->mockConnection())];
     }
 
     /**
@@ -96,10 +98,10 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends TestCase
     public function testCreateSelect()
     {
         $factory   = new AttributeTypeFactory($this->mockConnection());
-        $values    = array(
+        $values = [
             'force_alias'  => '',
-            'alias_fields' => serialize(array('title'))
-        );
+            'alias_fields' => \serialize(['title'])
+        ];
         $attribute = $factory->createInstance(
             $values,
             $this->mockMetaModel('mm_test', 'de', 'en')

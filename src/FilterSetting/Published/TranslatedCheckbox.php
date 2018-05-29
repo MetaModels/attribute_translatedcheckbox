@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,17 +16,18 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Andreas Isaak <info@andreas-isaak.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published;
 
-use MetaModels\Filter\Rules\SearchAttribute;
-use MetaModels\Filter\Setting\Simple as MetaModelFilterSetting;
-use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
 use MetaModels\Filter\IFilter as IMetaModelFilter;
+use MetaModels\Filter\Rules\SearchAttribute;
+use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
+use MetaModels\Filter\Setting\Simple as MetaModelFilterSetting;
 
 /**
  * Filter setting to filter for translated checkboxes.
@@ -54,7 +55,7 @@ class TranslatedCheckbox extends MetaModelFilterSetting
             return;
         }
         // Attribute not found, do not return anyting to prevent leaking of items.
-        $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList(array()));
+        $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList([]));
     }
 
     /**
@@ -62,7 +63,7 @@ class TranslatedCheckbox extends MetaModelFilterSetting
      */
     public function getParameters()
     {
-        return ($this->get('check_ignorepublished')) ? array('ignore_published' . $this->get('id')) : array();
+        return ($this->get('check_ignorepublished')) ? ['ignore_published' . $this->get('id')] : [];
     }
 
     /**
@@ -74,22 +75,22 @@ class TranslatedCheckbox extends MetaModelFilterSetting
     public function getParameterDCA()
     {
         if (!$this->get('check_ignorepublished')) {
-            return array();
+            return [];
         }
 
         $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
 
-        $arrLabel = array();
+        $arrLabel = [];
         foreach ($GLOBALS['TL_LANG']['MSC']['metamodel_filtersetting']['ignore_published'] as $strLabel) {
-            $arrLabel[] = sprintf($strLabel, $objAttribute->getName());
+            $arrLabel[] = \sprintf($strLabel, $objAttribute->getName());
         }
 
-        return array(
-            'ignore_published' . $this->get('id') => array
-            (
-                'label' => $arrLabel,
-                'inputType' => 'checkbox',
-            )
-        );
+        return [
+            'ignore_published' . $this->get('id') =>
+                [
+                    'label'     => $arrLabel,
+                    'inputType' => 'checkbox',
+                ]
+        ];
     }
 }
