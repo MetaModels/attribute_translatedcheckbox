@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,8 +13,9 @@
  * @package    MetaModels
  * @subpackage Tests
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @copyright  2012-2016 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -24,6 +25,8 @@ use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\Attribute\TranslatedCheckbox\AttributeTypeFactory;
 use MetaModels\IMetaModel;
 use MetaModels\Test\Attribute\AttributeTypeFactoryTest;
+use MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox;
+use MetaModels\MetaModel;
 
 /**
  * Test the attribute factory.
@@ -43,11 +46,7 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends AttributeTypeFactoryTes
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(
-            'MetaModels\MetaModel',
-            array(),
-            array(array())
-        );
+        $metaModel = $this->getMockBuilder(MetaModel::class)->setMethods([])->setConstructorArgs([[]])->getMock();
 
         $metaModel
             ->expects($this->any())
@@ -74,7 +73,7 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends AttributeTypeFactoryTes
      */
     protected function getAttributeFactories()
     {
-        return array(new AttributeTypeFactory());
+        return [new AttributeTypeFactory()];
     }
 
     /**
@@ -85,15 +84,15 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends AttributeTypeFactoryTes
     public function testCreateSelect()
     {
         $factory   = new AttributeTypeFactory();
-        $values    = array(
+        $values = [
             'force_alias'  => '',
-            'alias_fields' => serialize(array('title'))
-        );
+            'alias_fields' => \serialize(['title'])
+        ];
         $attribute = $factory->createInstance(
             $values,
             $this->mockMetaModel('mm_test', 'de', 'en')
         );
 
-        $this->assertInstanceOf('MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox', $attribute);
+        $this->assertInstanceOf(TranslatedCheckbox::class, $attribute);
     }
 }

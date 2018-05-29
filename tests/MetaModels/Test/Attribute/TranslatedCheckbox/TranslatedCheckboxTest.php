@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,8 +13,9 @@
  * @package    MetaModels
  * @subpackage Tests
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @copyright  2012-2016 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -22,11 +23,13 @@ namespace MetaModels\Test\Attribute\TranslatedCheckbox;
 
 use MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox;
 use MetaModels\IMetaModel;
+use MetaModels\MetaModel;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Alias.
  */
-class TranslatedCheckboxTest extends \PHPUnit_Framework_TestCase
+class TranslatedCheckboxTest extends TestCase
 {
     /**
      * Mock a MetaModel.
@@ -38,11 +41,7 @@ class TranslatedCheckboxTest extends \PHPUnit_Framework_TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(
-            'MetaModels\MetaModel',
-            array(),
-            array(array())
-        );
+        $metaModel = $this->getMockBuilder(MetaModel::class)->setMethods([])->setConstructorArgs([[]])->getMock();
 
         $metaModel
             ->expects($this->any())
@@ -70,6 +69,6 @@ class TranslatedCheckboxTest extends \PHPUnit_Framework_TestCase
     public function testInstantiation()
     {
         $text = new TranslatedCheckbox($this->mockMetaModel('en', 'en'));
-        $this->assertInstanceOf('MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox', $text);
+        $this->assertInstanceOf(TranslatedCheckbox::class, $text);
     }
 }
