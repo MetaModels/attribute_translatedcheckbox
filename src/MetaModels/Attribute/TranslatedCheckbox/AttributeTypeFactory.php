@@ -37,6 +37,6 @@ class AttributeTypeFactory extends AbstractAttributeTypeFactory
 
         $this->typeName  = 'translatedcheckbox';
         $this->typeIcon  = 'system/modules/metamodelsattribute_translatedcheckbox/html/checkbox.png';
-        $this->typeClass = 'MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox';
+        $this->typeClass = TranslatedCheckbox::class;
     }
 }

@@ -37,7 +37,7 @@ class TranslatedCheckboxFilterSettingTypeFactory extends AbstractFilterSettingTy
         $this
             ->setTypeName('translatedcheckbox_published')
             ->setTypeIcon('system/modules/metamodels/html/visible.png')
-            ->setTypeClass('MetaModels\Filter\Setting\Published\TranslatedCheckbox')
+            ->setTypeClass(TranslatedCheckbox::class)
             ->allowAttributeTypes('translatedcheckbox');
     }
 }

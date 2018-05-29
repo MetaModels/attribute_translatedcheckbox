@@ -25,6 +25,7 @@ use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\Attribute\TranslatedCheckbox\AttributeTypeFactory;
 use MetaModels\IMetaModel;
 use MetaModels\Test\Attribute\AttributeTypeFactoryTest;
+use MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox;
 
 /**
  * Test the attribute factory.
@@ -91,6 +92,6 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends AttributeTypeFactoryTes
             $this->mockMetaModel('mm_test', 'de', 'en')
         );
 
-        $this->assertInstanceOf('MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox', $attribute);
+        $this->assertInstanceOf(TranslatedCheckbox::class, $attribute);
     }
 }
