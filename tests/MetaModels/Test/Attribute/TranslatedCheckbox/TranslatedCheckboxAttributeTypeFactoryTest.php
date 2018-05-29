@@ -26,6 +26,7 @@ use MetaModels\Attribute\TranslatedCheckbox\AttributeTypeFactory;
 use MetaModels\IMetaModel;
 use MetaModels\Test\Attribute\AttributeTypeFactoryTest;
 use MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox;
+use MetaModels\MetaModel;
 
 /**
  * Test the attribute factory.
@@ -45,7 +46,7 @@ class TranslatedCheckboxAttributeTypeFactoryTest extends AttributeTypeFactoryTes
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock('MetaModels\MetaModel', [], [[]]);
+        $metaModel = $this->getMockBuilder(MetaModel::class)->setMethods([])->setConstructorArgs([[]])->getMock();
 
         $metaModel
             ->expects($this->any())

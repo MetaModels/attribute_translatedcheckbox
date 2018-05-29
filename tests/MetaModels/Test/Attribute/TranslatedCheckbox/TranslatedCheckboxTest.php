@@ -24,11 +24,12 @@ namespace MetaModels\Test\Attribute\TranslatedCheckbox;
 use MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox;
 use MetaModels\IMetaModel;
 use MetaModels\MetaModel;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class Alias.
  */
-class TranslatedCheckboxTest extends \PHPUnit_Framework_TestCase
+class TranslatedCheckboxTest extends TestCase
 {
     /**
      * Mock a MetaModel.
@@ -40,7 +41,7 @@ class TranslatedCheckboxTest extends \PHPUnit_Framework_TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(MetaModel::class, [], [[]]);
+        $metaModel = $this->getMockBuilder(MetaModel::class)->setMethods([])->setConstructorArgs([[]])->getMock();
 
         $metaModel
             ->expects($this->any())
