@@ -93,20 +93,19 @@ class TranslatedCheckbox extends TranslatedReference
         // Per definition:
         // - all values that are not contained are defaulting to false in the fallback language.
         // - all values in published not contained are defaulting to false.
-// TODO: Why is this needed?
-//        if ($this->isFixingOfValuesNeeded($arrReturn, $arrIds, $strLangCode)) {
-//            // We have to lock the retrieval to prevent endless recursion.
-//            $this->doNotFixValues = true;
-//
-//            $fixedValues = array();
-//            foreach (array_diff($arrIds, array_keys($arrReturn)) as $itemId) {
-//                $arrReturn[$itemId]   = $this->widgetToValue(false, $itemId);
-//                $fixedValues[$itemId] = $arrReturn[$itemId];
-//            }
-//
-//            // Unlock the retrieval again as we have fixed the values in the database.
-//            $this->doNotFixValues = false;
-//        }
+        if ($this->isFixingOfValuesNeeded($arrReturn, $arrIds, $strLangCode)) {
+            // We have to lock the retrieval to prevent endless recursion.
+            $this->doNotFixValues = true;
+
+            $fixedValues = array();
+            foreach (array_diff($arrIds, array_keys($arrReturn)) as $itemId) {
+                $arrReturn[$itemId]   = $this->widgetToValue(false, $itemId);
+                $fixedValues[$itemId] = $arrReturn[$itemId];
+            }
+
+            // Unlock the retrieval again as we have fixed the values in the database.
+            $this->doNotFixValues = false;
+        }
 
         return $arrReturn;
     }
