@@ -21,12 +21,12 @@
 namespace MetaModels\AttributeTranslatedCheckboxBundle\Attribute;
 
 use Doctrine\DBAL\Connection;
-use MetaModels\Attribute\AbstractAttributeTypeFactory;
+use MetaModels\Attribute\IAttributeTypeFactory;
 
 /**
  * Attribute type factory for checkbox attributes.
  */
-class AttributeTypeFactory extends AbstractAttributeTypeFactory
+class AttributeTypeFactory implements IAttributeTypeFactory
 {
     /**
      * Database connection.
@@ -42,11 +42,6 @@ class AttributeTypeFactory extends AbstractAttributeTypeFactory
      */
     public function __construct(Connection $connection)
     {
-        parent::__construct();
-
-        $this->typeName   = 'translatedcheckbox';
-        $this->typeIcon   = 'bundles/metamodelsattributetranslatedcheckbox/checkbox.png';
-        $this->typeClass  = TranslatedCheckbox::class;
         $this->connection = $connection;
     }
 
@@ -55,6 +50,56 @@ class AttributeTypeFactory extends AbstractAttributeTypeFactory
      */
     public function createInstance($information, $metaModel)
     {
-        return new $this->typeClass($metaModel, $information, $this->connection);
+        return new TranslatedCheckbox($metaModel, $information, $this->connection);
+    }
+
+    /**
+     * Return the type name - this is the internal type name used by MetaModels.
+     *
+     * @return string
+     */
+    public function getTypeName()
+    {
+        return 'translatedcheckbox';
+    }
+
+    /**
+     * Retrieve the (relative to TL_ROOT) path to a icon for the type.
+     *
+     * @return string
+     */
+    public function getTypeIcon()
+    {
+        return 'bundles/metamodelsattributetranslatedcheckbox/checkbox.png';
+    }
+
+    /**
+     * Check if the type is translated.
+     *
+     * @return bool
+     */
+    public function isTranslatedType()
+    {
+        return true;
+    }
+
+    /**
+     * Check if the type is of simple nature.
+     *
+     * @return bool
+     */
+    public function isSimpleType()
+    {
+        return false;
+    }
+
+    /**
+     * Check if the type is of complex nature.
+     *
+     * @return bool
+     */
+    public function isComplexType()
+    {
+        return true;
     }
 }
