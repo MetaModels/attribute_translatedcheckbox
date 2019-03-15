@@ -1,0 +1,13 @@
+services:
+    metamodels.attribute_translatedcheckbox.attribute_type_factory:
+        class: MetaModels\AttributeTranslatedCheckboxBundle\Attribute\AttributeTypeFactory
+        arguments:
+            - "@database_connection"
+            - "@metamodels.table_manipulator"
+        tags:
+            - { name: metamodels.attribute_factory }
+
+    netzmacht.attribute_translated_checkbox.filter_setting_factory:
+        class: MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published\TranslatedCheckboxFilterSettingTypeFactory
+        tags:
+            - { name: metamodels.filter_factory }

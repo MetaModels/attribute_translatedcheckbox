@@ -1,0 +1,25 @@
+services:
+  metamodels.attribute_translatedcheckbox.listeners.published_filter_setting_renderer:
+      class: MetaModels\AttributeTranslatedCheckboxBundle\EventListener\PublishedFilterSettingTypeRenderer
+      arguments:
+        - '@metamodels.filter_setting_factory'
+        - '@event_dispatcher'
+        - '@metamodels.assets.icon_builder'
+        - '@cca.dc-general.scope-matcher'
+      tags:
+        - { name: kernel.event_listener, event: dc-general.view.contao2backend.model-to-label, method: modelToLabel }
+
+  metamodels.attribute_translatedcheckbox.listeners.create_property_condition:
+      class: MetaModels\AttributeTranslatedCheckboxBundle\EventListener\CreatePropertyConditionListener
+      tags:
+        - name: kernel.event_listener
+          event: metamodels.events.create-property-condition-event
+          method: createCondition
+          priority: -10
+
+  metamodels.attribute_translatedcheckbox.listeners.build_meta_model_operations:
+      class: MetaModels\AttributeTranslatedCheckboxBundle\EventListener\BuildMetaModelOperationsListener
+      tags:
+        - name: kernel.event_listener
+          event: 'metamodels.dc-general.events.metamodel.build.metamodel.operations'
+          method: handle
