@@ -30,13 +30,6 @@ use MetaModels\Attribute\TranslatedReference;
 class TranslatedCheckbox extends TranslatedReference
 {
     /**
-     * Private flag to lock filling of missing values in getTranslatedDataFor.
-     *
-     * @var bool
-     */
-    private $doNotFixValues = false;
-
-    /**
      * Check if the attribute is a published field.
      *
      * @return bool
@@ -92,36 +85,10 @@ class TranslatedCheckbox extends TranslatedReference
         // Per definition:
         // - all values that are not contained are defaulting to false in the fallback language.
         // - all values in published not contained are defaulting to false.
-        if ($this->isFixingOfValuesNeeded($arrReturn, $arrIds, $strLangCode)) {
-            foreach (array_diff($arrIds, array_keys($arrReturn)) as $itemId) {
-                $arrReturn[$itemId] = $this->widgetToValue(false, $itemId);
-            }
+        foreach (array_diff($arrIds, array_keys($arrReturn)) as $itemId) {
+            $arrReturn[$itemId] = $this->widgetToValue(false, $itemId);
         }
 
         return $arrReturn;
-    }
-
-    /**
-     * Check if the passed values need to be fixed (filled up) with missing ids.
-     *
-     * @param array    $values   The retrieved values.
-     *
-     * @param string[] $idList   The list of ids.
-     *
-     * @param string   $langCode The language code.
-     *
-     * @return bool
-     */
-    private function isFixingOfValuesNeeded($values, $idList, $langCode)
-    {
-        if ($this->doNotFixValues) {
-            return false;
-        }
-
-        if (\count($values) == \count($idList)) {
-            return false;
-        }
-
-        return ($this->isPublishedField() || ($langCode == $this->getMetaModel()->getFallbackLanguage()));
     }
 }
