@@ -23,4 +23,4 @@
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['translatedcheckbox'] = 'Translated checkbox';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'][0]                  = 'Publishing checkbox';
 $GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'][1]                  =
-    'If this is selected, the items will appear in lists in the frontend (you will get the green "eye" for free.';
+    'If this is selected, the items will appear in lists in the frontend (you will get the green "eye" for free).';
