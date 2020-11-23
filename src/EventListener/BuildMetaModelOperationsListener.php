@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2020 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,19 +14,22 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\AttributeTranslatedCheckboxBundle\EventListener;
 
+use Contao\FilesModel;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinition;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\CommandCollectionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\TranslatedToggleCommand;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\AttributeTranslatedCheckboxBundle\Attribute\TranslatedCheckbox;
+use MetaModels\CoreBundle\Assets\IconBuilder;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 
 /**
@@ -34,6 +37,22 @@ use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
  */
 class BuildMetaModelOperationsListener
 {
+    /**
+     * The icon builder.
+     *
+     * @var IconBuilder
+     */
+    private $iconBuilder;
+
+    /**
+     * Create a new instance.
+     *
+     * @param IconBuilder $iconBuilder The icon builder.
+     */
+    public function __construct(IconBuilder $iconBuilder)
+    {
+        $this->iconBuilder = $iconBuilder;
+    }
 
     /**
      * Generate the toggle command information.
@@ -73,12 +92,27 @@ class BuildMetaModelOperationsListener
             $extra          = $toggle->getExtra();
             $extra['icon']  = 'visible.svg';
             $extra['class'] = $class;
+            $info           = null;
+
+            $objIconEnabled  = FilesModel::findByUuid(
+                $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicon']
+            );
+            $objIconDisabled = FilesModel::findByUuid(
+                $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicondisabled']
+            );
+
+            if ($attribute->get('tcheck_listview') == 1 && $objIconEnabled->path) {
+                $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
+            }
+
+            if ($attribute->get('tcheck_listview') == 1 && $objIconDisabled->path) {
+                $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
+            }
 
             if ($commands->hasCommandNamed('show')) {
                 $info = $commands->getCommandNamed('show');
-            } else {
-                $info = null;
             }
+
             $commands->addCommand($toggle, $info);
         }
     }
