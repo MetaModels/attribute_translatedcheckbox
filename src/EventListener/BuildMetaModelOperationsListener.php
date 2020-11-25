@@ -57,23 +57,31 @@ class BuildMetaModelOperationsListener
     /**
      * Generate the toggle command information.
      *
-     * @param CommandCollectionInterface $commands    The already existing commands.
+     * @param CommandCollectionInterface $commands     The already existing commands.
      *
-     * @param IAttribute                 $attribute   The attribute.
+     * @param IAttribute                 $attribute    The attribute.
      *
-     * @param string                     $commandName The name of the new command.
+     * @param string                     $commandName  The name of the new command.
      *
-     * @param string                     $class       The name of the CSS class for the command.
+     * @param string                     $class        The name of the CSS class for the command.
      *
-     * @param string                     $language    The language name.
+     * @param string                     $language     The language name.
+     *
+     * @param array                      $propertyData The property date from the input screen property.
      *
      * @return void
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
-    protected function generateToggleCommand($commands, $attribute, $commandName, $class, $language)
-    {
+    protected function generateToggleCommand(
+        CommandCollectionInterface $commands,
+        IAttribute $attribute,
+        string $commandName,
+        string $class,
+        string $language,
+        array $propertyData
+    ) {
         if (!$commands->hasCommandNamed($commandName)) {
             $toggle = new TranslatedToggleCommand();
             $toggle
@@ -109,6 +117,10 @@ class BuildMetaModelOperationsListener
                 $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
             }
 
+            if (!empty($propertyData['eval']['readonly'])) {
+                $toggle->setDisabled(true);
+            }
+
             if ($commands->hasCommandNamed('show')) {
                 $info = $commands->getCommandNamed('show');
             }
@@ -120,14 +132,19 @@ class BuildMetaModelOperationsListener
     /**
      * Build a attribute toggle operation for all languages of the MetaModel.
      *
-     * @param TranslatedCheckbox         $attribute The checkbox attribute.
+     * @param TranslatedCheckbox         $attribute    The checkbox attribute.
      *
-     * @param CommandCollectionInterface $commands  The already existing commands.
+     * @param CommandCollectionInterface $commands     The already existing commands.
+     *
+     * @param array                      $propertyData The property date from the input screen property.
      *
      * @return void
      */
-    protected function buildCommandsFor($attribute, $commands)
-    {
+    protected function buildCommandsFor(
+        TranslatedCheckbox $attribute,
+        CommandCollectionInterface $commands,
+        array $propertyData
+    ) {
         $activeLanguage = $attribute->getMetaModel()->getActiveLanguage();
         $commandName    = 'publishtranslatedcheckboxtoggle_' . $attribute->getColName();
 
@@ -136,7 +153,8 @@ class BuildMetaModelOperationsListener
             $attribute,
             $commandName . '_' . $activeLanguage,
             'contextmenu',
-            $activeLanguage
+            $activeLanguage,
+            $propertyData
         );
 
         foreach (\array_diff($attribute->getMetaModel()->getAvailableLanguages(), [$activeLanguage]) as $langCode) {
@@ -145,7 +163,8 @@ class BuildMetaModelOperationsListener
                 $attribute,
                 $commandName . '_' . $langCode,
                 'edit-header',
-                $langCode
+                $langCode,
+                $propertyData
             );
         }
     }
@@ -162,17 +181,50 @@ class BuildMetaModelOperationsListener
      */
     public function handle(BuildMetaModelOperationsEvent $event)
     {
+        $allProps   = $event->getScreen()['properties'];
+        $properties = \array_map(
+            function ($property) {
+                return ($property['col_name'] ?? null);
+            },
+            $allProps
+        );
+
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
-            if (($attribute instanceof TranslatedCheckbox) && ($attribute->get('check_publish') == 1)) {
-                $container = $event->getContainer();
-                if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
-                    $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
-                } else {
-                    $view = new Contao2BackendViewDefinition();
-                    $container->setDefinition(Contao2BackendViewDefinitionInterface::NAME, $view);
-                }
-                $this->buildCommandsFor($attribute, $view->getModelCommands());
+            if (!$this->wantToAdd($attribute, $properties)) {
+                continue;
             }
+
+            $info = [];
+            foreach ($allProps as $prop) {
+                if ($prop['col_name'] === $attribute->getColName()) {
+                    $info = $prop;
+                    break;
+                }
+            }
+
+            $container = $event->getContainer();
+            if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
+                $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
+            } else {
+                $view = new Contao2BackendViewDefinition();
+                $container->setDefinition(Contao2BackendViewDefinitionInterface::NAME, $view);
+            }
+            $this->buildCommandsFor($attribute, $view->getModelCommands(), $info);
         }
+    }
+
+    /**
+     * Test if we want to add an operation for the attribute.
+     *
+     * @param IAttribute $attribute  The attribute to test.
+     * @param array      $properties The property names in the input screen.
+     *
+     * @return bool
+     */
+    private function wantToAdd(IAttribute $attribute, array $properties): bool
+    {
+        return ($attribute instanceof TranslatedCheckbox)
+               && (($attribute->get('check_publish') === '1') || ($attribute->get('check_listview') === '1'))
+               && (\in_array($attribute->getColName(), $properties, true));
     }
 }
