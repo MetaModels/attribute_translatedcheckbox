@@ -21,7 +21,7 @@ services:
     class: MetaModels\AttributeTranslatedCheckboxBundle\EventListener\BuildMetaModelOperationsListener
     tags:
       - name: kernel.event_listener
-        event: 'metamodels.dc-general.events.metamodel.build.metamodel.operations'
+        event: "@metamodels.assets.icon_builder"
         method: handle
 
   metamodels.attribute_translated_checkbox.listeners.listview_fields:
