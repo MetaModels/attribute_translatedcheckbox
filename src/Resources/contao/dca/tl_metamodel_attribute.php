@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2020 The MetaModels team.
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -29,7 +29,7 @@
  */
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metapalettes']['translatedcheckbox extends _simpleattribute_'] = [
     '-advanced' => ['isunique'],
-    '+advanced' => ['check_publish', 'tcheck_listview']
+    '+advanced' => ['tcheck_inverse', 'check_publish', 'tcheck_listview']
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['metasubpalettes']['tcheck_listview'] = ['tcheck_listviewicon_fields'];
@@ -69,8 +69,18 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'],
     'exclude'   => true,
     'inputType' => 'checkbox',
-    'eval'      => ['tl_class' => 'w50'],
+    'eval'      => ['tl_class' => 'w50 cbx m12'],
     'sql'       => 'char(1) NOT NULL default \'\''
+];
+
+$GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['tcheck_inverse'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['tcheck_inverse'],
+    'exclude'   => true,
+    'inputType' => 'checkbox',
+    'sql'       => 'char(1) NOT NULL default \'\'',
+    'eval'      => [
+        'tl_class' => 'w50 cbx m12'
+    ],
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['tcheck_listview'] = [
