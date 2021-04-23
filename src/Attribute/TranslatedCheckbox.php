@@ -108,6 +108,30 @@ class TranslatedCheckbox extends TranslatedReference
         $procedure  = 't.' . $optionizer['value'] . ' LIKE :pattern';
         $pattern    = str_replace(['*', '?'], ['%', '_'], $pattern);
 
+        // If option inverse on.
+        if ($this->get('tcheck_inverse')) {
+            $queryBuilderSub = $this->connection->createQueryBuilder()
+                ->select('DISTINCT t.item_id')
+                ->from($this->getValueTable(), 't')
+                ->andWhere($procedure);
+
+            $this->buildWhere($queryBuilderSub, null, $languages);
+
+            $queryBuilder = $this->connection->createQueryBuilder();
+            $queryBuilder->select('t2.id')
+                ->from($this->getMetaModel()->getTableName(), 't2')
+                ->where($queryBuilder->expr()->notIn('t2.id', $queryBuilderSub->getSQL()))
+                ->setParameter('pattern', $pattern);
+            foreach ($queryBuilderSub->getParameters() as $name => $value) {
+                $queryBuilder->setParameter($name, $value, $queryBuilderSub->getParameterType($name));
+            }
+
+            $filterRuleInverse = SimpleQuery::createFromQueryBuilder($queryBuilder, 'id');
+
+            return $filterRuleInverse->getMatchingIds();
+        }
+
+        // If option inverse off.
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('DISTINCT t.item_id')
             ->from($this->getValueTable(), 't')
@@ -118,21 +142,7 @@ class TranslatedCheckbox extends TranslatedReference
 
         $filterRule = SimpleQuery::createFromQueryBuilder($queryBuilder, 'item_id');
 
-        // If option inverse off.
-        if (!$this->get('tcheck_inverse')) {
-            return $filterRule->getMatchingIds();
-        }
-
-        // If option inverse on.
-        $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('t.id')
-            ->from($this->getMetaModel()->getTableName(), 't')
-            ->where('t.id NOT IN (:checkedItems)')
-            ->setParameter('checkedItems', $filterRule->getMatchingIds(), Connection::PARAM_STR_ARRAY);
-
-        $filterRuleInverse = SimpleQuery::createFromQueryBuilder($queryBuilder, 'id');
-
-        return $filterRuleInverse->getMatchingIds();
+        return $filterRule->getMatchingIds();
     }
 
     /**
@@ -148,18 +158,22 @@ class TranslatedCheckbox extends TranslatedReference
      */
     private function buildWhere(QueryBuilder $queryBuilder, $mixIds, $mixLangCode = '')
     {
+        $alias = '';
+        if (null !== $firstFrom = $queryBuilder->getQueryPart('from')[0] ?? null) {
+            $alias = $firstFrom['alias'] . '.';
+        }
         $queryBuilder
-            ->andWhere('att_id = :att_id')
+            ->andWhere($alias . 'att_id = :att_id')
             ->setParameter('att_id', $this->get('id'));
 
         if (!empty($mixIds)) {
             if (is_array($mixIds)) {
                 $queryBuilder
-                    ->andWhere('item_id IN (:item_ids)')
+                    ->andWhere($alias . 'item_id IN (:item_ids)')
                     ->setParameter('item_ids', $mixIds, Connection::PARAM_STR_ARRAY);
             } else {
                 $queryBuilder
-                    ->andWhere('item_id = :item_id')
+                    ->andWhere($alias . 'item_id = :item_id')
                     ->setParameter('item_id', $mixIds);
             }
         }
@@ -167,11 +181,11 @@ class TranslatedCheckbox extends TranslatedReference
         if (!empty($mixLangCode)) {
             if (is_array($mixLangCode)) {
                 $queryBuilder
-                    ->andWhere('langcode IN (:langcode)')
+                    ->andWhere($alias . 'langcode IN (:langcode)')
                     ->setParameter('langcode', $mixLangCode, Connection::PARAM_STR_ARRAY);
             } else {
                 $queryBuilder
-                    ->andWhere('langcode = :langcode')
+                    ->andWhere($alias . 'langcode = :langcode')
                     ->setParameter('langcode', $mixLangCode);
             }
         }
