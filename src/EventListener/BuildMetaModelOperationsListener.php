@@ -149,19 +149,9 @@ class BuildMetaModelOperationsListener
         CommandCollectionInterface $commands,
         array $propertyData
     ) {
-        $activeLanguage = $attribute->getMetaModel()->getActiveLanguage();
-        $commandName    = 'publishtranslatedcheckboxtoggle_' . $attribute->getColName();
+        $commandName = 'publishtranslatedcheckboxtoggle_' . $attribute->getColName();
 
-        $this->generateToggleCommand(
-            $commands,
-            $attribute,
-            $commandName . '_' . $activeLanguage,
-            'contextmenu',
-            $activeLanguage,
-            $propertyData
-        );
-
-        foreach (\array_diff($attribute->getMetaModel()->getAvailableLanguages(), [$activeLanguage]) as $langCode) {
+        foreach ($attribute->getMetaModel()->getLanguages() as $langCode) {
             $this->generateToggleCommand(
                 $commands,
                 $attribute,
