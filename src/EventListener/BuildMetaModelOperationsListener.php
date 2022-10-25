@@ -105,11 +105,11 @@ class BuildMetaModelOperationsListener
                 $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicondisabled'] ?? null
             );
 
-            if ($attribute->get('tcheck_listview') == 1 && $objIconEnabled->path) {
+            if ($attribute->get('tcheck_listview') == 1 && null !== $objIconEnabled && $objIconEnabled->path) {
                 $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
             }
 
-            if ($attribute->get('tcheck_listview') == 1 && $objIconDisabled->path) {
+            if ($attribute->get('tcheck_listview') == 1 && null !== $objIconDisabled && $objIconDisabled->path) {
                 $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
             }
 
