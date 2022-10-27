@@ -186,7 +186,7 @@ class BuildMetaModelOperationsListener
 
             $info = [];
             foreach ($allProps as $prop) {
-                if ($prop['col_name'] === $attribute->getColName()) {
+                if (isset($prop['col_name']) && $prop['col_name'] === $attribute->getColName()) {
                     $info = $prop;
                     break;
                 }
