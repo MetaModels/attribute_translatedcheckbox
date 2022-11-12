@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2022 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,7 @@
  *
  * @package    MetaModels/attribute_translatedcheckbox
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2020 The MetaModels team.
+ * @copyright  2012-2022 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -94,7 +94,7 @@ class ListviewiconFieldsListener
         $newValues = [];
         $languages = $extra['columnFields']['listviewicon_language']['options'];
         foreach (array_keys($languages) as $key) {
-            if ($thisValue = $value[$key] ?? null) {
+            if ($thisValue = ($value[$key] ?? null)) {
                 $newValues[] = [
                     'listviewicon_language'       => $key,
                     'tcheck_listviewicon'         => $thisValue['tcheck_listviewicon'],
@@ -128,7 +128,7 @@ class ListviewiconFieldsListener
         $value = StringUtil::deserialize($event->getValue(), true);
 
         $result = [];
-        foreach ($value as $k => $v) {
+        foreach ($value as $v) {
             $result[$v['listviewicon_language']] = [
                 'tcheck_listviewicon'         => $v['tcheck_listviewicon'],
                 'tcheck_listviewicondisabled' => $v['tcheck_listviewicondisabled']
