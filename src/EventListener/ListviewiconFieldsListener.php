@@ -94,7 +94,7 @@ class ListviewiconFieldsListener
         $newValues = [];
         $languages = $extra['columnFields']['listviewicon_language']['options'];
         foreach (array_keys($languages) as $key) {
-            if ($thisValue = $value[$key] ?? null) {
+            if ($thisValue = ($value[$key] ?? null)) {
                 $newValues[] = [
                     'listviewicon_language'       => $key,
                     'tcheck_listviewicon'         => $thisValue['tcheck_listviewicon'],
@@ -128,7 +128,7 @@ class ListviewiconFieldsListener
         $value = StringUtil::deserialize($event->getValue(), true);
 
         $result = [];
-        foreach ($value as $k => $v) {
+        foreach ($value as $v) {
             $result[$v['listviewicon_language']] = [
                 'tcheck_listviewicon'         => $v['tcheck_listviewicon'],
                 'tcheck_listviewicondisabled' => $v['tcheck_listviewicondisabled']
