@@ -21,7 +21,6 @@
  */
 
 
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish']['0']                = 'Chaschetta da publicaziun';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['listviewicon_language']['0']        = 'Lingua';
-$GLOBALS['TL_LANG']['tl_metamodel_attribute']['typeOptions']['translatedcheckbox'] = 'Chaschetta da translatar';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish']['0']  = 'Yayınlama onay kutusu';
+$GLOBALS['TL_LANG']['tl_metamodel_attribute']['tcheck_inverse']['0'] = 'Ters';
 
