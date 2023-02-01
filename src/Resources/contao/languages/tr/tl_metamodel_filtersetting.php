@@ -1,20 +1,28 @@
 <?php
 /**
- * Translations are managed using Transifex. To create a new translation
+ * This file is part of MetaModels/attribute_translatedcheckbox.
+ *
+ * (c) 2012-2023 The MetaModels team.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * Translations are managed automatically using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  *
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * Last-updated: 2023-02-01T16:20:31+00:00
  *
- * @link https://www.transifex.com/signup/
- * @link https://www.transifex.com/projects/p/$$project$$/language/$$lang$$/
- *
- * last-updated: 2017-05-25T00:08:30+02:00
+ * @copyright 2012-2023 The MetaModels team.
+ * @license   https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
+ * @link      https://www.transifex.com/metamodels/public/
+ * @link      https://www.transifex.com/signup/?join_project=metamodels
  */
 
 
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview']['0']                  = 'Önizleme modunda filtreyi yoksay';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview']['1']                  = 'Bunu işaretlerseniz, bir kullanıcı "Ön uç ön izleme" içindeyken ve "yayınlanmamış öğeleri göster" seçeneği etkin olduğunda bu filtre uygulanmaz.';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished']['0']               = 'Parametreyi geçersiz kılmaya izin ver';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished']['1']               = 'Bunu işaretlerseniz, filtre parametreleri bu ayarı geçersiz kılabilir.';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typedesc']['translatedcheckbox_published'] = '%s <strong>%s</strong> %s <br /> özellikte <em>%s</em>';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview']['0']    = 'Önizleme modunda filtreyi yoksay';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview']['1']    = 'Bunu işaretlerseniz, bir kullanıcı "Ön uç ön izleme" içindeyken ve "yayınlanmamış öğeleri göster" seçeneği etkin olduğunda bu filtre uygulanmaz.';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished']['0'] = 'Parametreyi geçersiz kılmaya izin ver';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished']['1'] = 'Bunu işaretlerseniz, filtre parametreleri bu ayarı geçersiz kılabilir.';
 

@@ -1,14 +1,23 @@
 <?php
 /**
- * Translations are managed using Transifex. To create a new translation
+ * This file is part of MetaModels/attribute_translatedcheckbox.
+ *
+ * (c) 2012-2023 The MetaModels team.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * Translations are managed automatically using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  *
- * @link http://help.transifex.com/intro/translating.html
- * @link https://www.transifex.com/projects/p/metamodels/language/ru/
+ * Last-updated: 2023-02-01T16:20:31+00:00
  *
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- *
- * last-updated: 2014-12-14T16:15:07+01:00
+ * @copyright 2012-2023 The MetaModels team.
+ * @license   https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
+ * @link      https://www.transifex.com/metamodels/public/
+ * @link      https://www.transifex.com/signup/?join_project=metamodels
  */
 
 
@@ -16,6 +25,5 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview']['0']    
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview']['1']                   = 'Если выбрать, фильтр не будет применен, когда пользователь находится в режиме предварительного просмотра внешнего интерфейса и имеет включенную опцию "показать неопубликованные элементы".';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished']['0']                = 'Разрешить переопределение параметра';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished']['1']                = 'Если выбрать, этот параметр может переопределить настройки фильтра.';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typedesc']['translatedcheckbox_published']  = '%s <strong>%s</strong> %s <br /> в атрибуте <em>%s</em>';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typenames']['translatedcheckbox_published'] = 'Переводить состояние публикации';
 
