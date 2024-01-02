@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,14 +16,14 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\AttributeTranslatedCheckboxBundle\Attribute;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Query\QueryBuilder;
 use MetaModels\Attribute\TranslatedReference;
 use MetaModels\Filter\Rules\SimpleQuery;
@@ -40,7 +40,7 @@ class TranslatedCheckbox extends TranslatedReference
      */
     public function isPublishedField()
     {
-        return $this->get('check_publish') == 1;
+        return $this->get('check_publish') === 1;
     }
 
     /**
@@ -92,7 +92,7 @@ class TranslatedCheckbox extends TranslatedReference
         // Per definition:
         // - all values that are not contained are defaulting to false in the fallback language.
         // - all values in published not contained are defaulting to false.
-        foreach (array_diff($arrIds, array_keys($arrReturn)) as $itemId) {
+        foreach (\array_diff($arrIds, \array_keys($arrReturn)) as $itemId) {
             $arrReturn[$itemId] = $this->widgetToValue(false, $itemId);
         }
 
@@ -102,11 +102,11 @@ class TranslatedCheckbox extends TranslatedReference
     /**
      * {@inheritdoc}
      */
-    public function searchForInLanguages($pattern, $languages = [])
+    public function searchForInLanguages($strPattern, $arrLanguages = [])
     {
         $optionizer = $this->getOptionizer();
         $procedure  = 't.' . $optionizer['value'] . ' LIKE :pattern';
-        $pattern    = str_replace(['*', '?'], ['%', '_'], $pattern);
+        $strPattern = \str_replace(['*', '?'], ['%', '_'], $strPattern);
 
         // If option inverse on.
         if ($this->get('tcheck_inverse')) {
@@ -115,20 +115,18 @@ class TranslatedCheckbox extends TranslatedReference
                 ->from($this->getValueTable(), 't')
                 ->andWhere($procedure);
 
-            $this->buildWhere($queryBuilderSub, null, $languages);
+            $this->buildWhere($queryBuilderSub, null, $arrLanguages);
 
             $queryBuilder = $this->connection->createQueryBuilder();
             $queryBuilder->select('t2.id')
                 ->from($this->getMetaModel()->getTableName(), 't2')
                 ->where($queryBuilder->expr()->notIn('t2.id', $queryBuilderSub->getSQL()))
-                ->setParameter('pattern', $pattern);
+                ->setParameter('pattern', $strPattern);
             foreach ($queryBuilderSub->getParameters() as $name => $value) {
                 $queryBuilder->setParameter($name, $value, $queryBuilderSub->getParameterType($name));
             }
 
-            $filterRuleInverse = SimpleQuery::createFromQueryBuilder($queryBuilder, 'id');
-
-            return $filterRuleInverse->getMatchingIds();
+            return SimpleQuery::createFromQueryBuilder($queryBuilder, 'id')->getMatchingIds();
         }
 
         // If option inverse off.
@@ -136,13 +134,11 @@ class TranslatedCheckbox extends TranslatedReference
             ->select('DISTINCT t.item_id')
             ->from($this->getValueTable(), 't')
             ->andWhere($procedure)
-            ->setParameter('pattern', $pattern);
+            ->setParameter('pattern', $strPattern);
 
-        $this->buildWhere($queryBuilder, null, $languages);
+        $this->buildWhere($queryBuilder, null, $arrLanguages);
 
-        $filterRule = SimpleQuery::createFromQueryBuilder($queryBuilder, 'item_id');
-
-        return $filterRule->getMatchingIds();
+        return SimpleQuery::createFromQueryBuilder($queryBuilder, 'item_id')->getMatchingIds();
     }
 
     /**
@@ -170,7 +166,7 @@ class TranslatedCheckbox extends TranslatedReference
             if (is_array($mixIds)) {
                 $queryBuilder
                     ->andWhere($alias . 'item_id IN (:item_ids)')
-                    ->setParameter('item_ids', $mixIds, Connection::PARAM_STR_ARRAY);
+                    ->setParameter('item_ids', $mixIds, ArrayParameterType::STRING);
             } else {
                 $queryBuilder
                     ->andWhere($alias . 'item_id = :item_id')
@@ -182,7 +178,7 @@ class TranslatedCheckbox extends TranslatedReference
             if (is_array($mixLangCode)) {
                 $queryBuilder
                     ->andWhere($alias . 'langcode IN (:langcode)')
-                    ->setParameter('langcode', $mixLangCode, Connection::PARAM_STR_ARRAY);
+                    ->setParameter('langcode', $mixLangCode, ArrayParameterType::STRING);
             } else {
                 $queryBuilder
                     ->andWhere($alias . 'langcode = :langcode')

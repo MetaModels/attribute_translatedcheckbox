@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -34,6 +34,8 @@ use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 
 /**
  * This class creates the default instances for property conditions when generating input screens.
+ *
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 class BuildMetaModelOperationsListener
 {
@@ -42,7 +44,7 @@ class BuildMetaModelOperationsListener
      *
      * @var IconBuilder
      */
-    private $iconBuilder;
+    private IconBuilder $iconBuilder;
 
     /**
      * Create a new instance.
@@ -99,21 +101,21 @@ class BuildMetaModelOperationsListener
             $info           = null;
 
             $objIconEnabled  = FilesModel::findByUuid(
-                $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicon'] ?? null
+                $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicon'] ?? ''
             );
             $objIconDisabled = FilesModel::findByUuid(
-                $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicondisabled'] ?? null
+                $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicondisabled'] ?? ''
             );
 
-            if ($attribute->get('tcheck_listview') == 1 && null !== $objIconEnabled && $objIconEnabled->path) {
+            if ($attribute->get('tcheck_listview') === 1 && null !== $objIconEnabled && $objIconEnabled->path) {
                 $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
             }
 
-            if ($attribute->get('tcheck_listview') == 1 && null !== $objIconDisabled && $objIconDisabled->path) {
+            if ($attribute->get('tcheck_listview') === 1 && null !== $objIconDisabled && $objIconDisabled->path) {
                 $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
             }
 
-            if ($attribute->get('tcheck_inverse') == 1) {
+            if ($attribute->get('tcheck_inverse') === 1) {
                 $toggle->setInverse(true);
             }
 
@@ -133,9 +135,7 @@ class BuildMetaModelOperationsListener
      * Build a attribute toggle operation for all languages of the MetaModel.
      *
      * @param TranslatedCheckbox         $attribute    The checkbox attribute.
-     *
      * @param CommandCollectionInterface $commands     The already existing commands.
-     *
      * @param array                      $propertyData The property date from the input screen property.
      *
      * @return void
@@ -173,7 +173,7 @@ class BuildMetaModelOperationsListener
     {
         $allProps   = $event->getScreen()['properties'];
         $properties = \array_map(
-            function ($property) {
+            static function ($property) {
                 return ($property['col_name'] ?? null);
             },
             $allProps

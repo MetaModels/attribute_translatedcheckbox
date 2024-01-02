@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,13 +17,14 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published;
 
+use Contao\System;
 use MetaModels\Filter\IFilter as IMetaModelFilter;
 use MetaModels\Filter\Rules\SearchAttribute;
 use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
@@ -46,12 +47,16 @@ class TranslatedCheckbox extends MetaModelFilterSetting
         }
 
         // Skip filter when in front end preview.
-        if ($this->get('check_allowpreview') && BE_USER_LOGGED_IN) {
+        if (
+            $this->get('check_allowpreview')
+            && System::getContainer()->get('contao.security.token_checker')?->hasBackendUser()
+        ) {
             return;
         }
 
         $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
         if ($objAttribute) {
+            /** @psalm-suppress DeprecatedMethod */
             $objFilterRule = new SearchAttribute($objAttribute, '1', $this->getMetaModel()->getActiveLanguage());
             $objFilter->addFilterRule($objFilterRule);
             return;
@@ -80,7 +85,9 @@ class TranslatedCheckbox extends MetaModelFilterSetting
             return [];
         }
 
-        $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
+        if (null === $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'))) {
+            return [];
+        }
 
         $arrLabel = [];
         foreach ($GLOBALS['TL_LANG']['MSC']['metamodel_filtersetting']['ignore_published'] as $strLabel) {
