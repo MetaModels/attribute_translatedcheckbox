@@ -115,7 +115,7 @@ class TranslatedCheckbox extends TranslatedReference
                 ->from($this->getValueTable(), 't')
                 ->andWhere($procedure);
 
-            $this->buildWhere($queryBuilderSub, null, $arrLanguages);
+            $this->buildWhere($queryBuilderSub, null, $arrLanguages, 't');
 
             $queryBuilder = $this->connection->createQueryBuilder();
             $queryBuilder->select('t2.id')
@@ -136,7 +136,7 @@ class TranslatedCheckbox extends TranslatedReference
             ->andWhere($procedure)
             ->setParameter('pattern', $strPattern);
 
-        $this->buildWhere($queryBuilder, null, $arrLanguages);
+        $this->buildWhere($queryBuilder, null, $arrLanguages, 't');
 
         return SimpleQuery::createFromQueryBuilder($queryBuilder, 'item_id')->getMatchingIds();
     }
@@ -144,46 +144,49 @@ class TranslatedCheckbox extends TranslatedReference
     /**
      * Build a where clause for the given id(s) and language code.
      *
-     * @param QueryBuilder         $queryBuilder The query builder for the query  being build.
-     * @param string[]|string|null $mixIds       One, none or many ids to use.
-     * @param string|string[]      $mixLangCode  The language code/s to use, optional.
+     * @param QueryBuilder             $queryBuilder The query builder for the query  being build.
+     * @param null|list<string>|string $mixIds       One, none or many ids to use.
+     * @param array                    $arrLangCode  The language code/s to use, optional.
+     * @param string                   $alias        The table alias, optional.
      *
      * @return void
      */
-    private function buildWhere(QueryBuilder $queryBuilder, $mixIds, $mixLangCode = '')
-    {
-        $alias = '';
-
-        if (null !== ($firstFrom = ($queryBuilder->getQueryPart('from')[0] ?? null))) {
-            $alias = $firstFrom['alias'] . '.';
+    private function buildWhere(
+        QueryBuilder $queryBuilder,
+        array|string|null $mixIds,
+        array $arrLangCode,
+        string $alias = ''
+    ): void {
+        if ('' !== $alias) {
+            $alias .= '.';
         }
 
         $queryBuilder
             ->andWhere($alias . 'att_id = :att_id')
             ->setParameter('att_id', $this->get('id'));
 
-        if (!empty($mixIds)) {
-            if (is_array($mixIds)) {
-                $queryBuilder
-                    ->andWhere($alias . 'item_id IN (:item_ids)')
-                    ->setParameter('item_ids', $mixIds, ArrayParameterType::STRING);
-            } else {
-                $queryBuilder
-                    ->andWhere($alias . 'item_id = :item_id')
-                    ->setParameter('item_id', $mixIds);
-            }
+        if ([] !== $arrLangCode) {
+            $queryBuilder
+                ->andWhere($alias . 'langcode IN (:langcode)')
+                ->setParameter('langcode', $arrLangCode, ArrayParameterType::STRING);
         }
 
-        if (!empty($mixLangCode)) {
-            if (is_array($mixLangCode)) {
-                $queryBuilder
-                    ->andWhere($alias . 'langcode IN (:langcode)')
-                    ->setParameter('langcode', $mixLangCode, ArrayParameterType::STRING);
-            } else {
-                $queryBuilder
-                    ->andWhere($alias . 'langcode = :langcode')
-                    ->setParameter('langcode', $mixLangCode);
-            }
+        if (null === $mixIds) {
+            return;
         }
+        if (\is_array($mixIds)) {
+            if ([] === $mixIds) {
+                return;
+            }
+
+            $queryBuilder
+                ->andWhere($alias . 'item_id IN (:item_ids)')
+                ->setParameter('item_ids', $mixIds, ArrayParameterType::STRING);
+
+            return;
+        }
+        $queryBuilder
+            ->andWhere($alias . 'item_id = :item_id')
+            ->setParameter('item_id', $mixIds);
     }
 }
