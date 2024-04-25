@@ -42,26 +42,26 @@ class TranslatedCheckbox extends MetaModelFilterSetting
      */
     public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
     {
-        if ($this->get('check_ignorepublished') && $arrFilterUrl['ignore_published' . $this->get('id')]) {
+        if ((bool) $this->get('check_ignorepublished') && $arrFilterUrl['ignore_published' . $this->get('id')]) {
             return;
         }
 
         // Skip filter when in front end preview.
         if (
-            $this->get('check_allowpreview')
+            (bool) $this->get('check_allowpreview')
             && System::getContainer()->get('contao.security.token_checker')?->hasBackendUser()
         ) {
             return;
         }
 
-        $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
+        $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
         if ($objAttribute) {
             /** @psalm-suppress DeprecatedMethod */
             $objFilterRule = new SearchAttribute($objAttribute, '1', $this->getMetaModel()->getActiveLanguage());
             $objFilter->addFilterRule($objFilterRule);
             return;
         }
-        // Attribute not found, do not return anyting to prevent leaking of items.
+        // Attribute not found, do not return anything to prevent leaking of items.
         $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList([]));
     }
 

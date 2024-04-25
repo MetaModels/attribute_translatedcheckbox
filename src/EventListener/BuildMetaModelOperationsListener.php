@@ -31,6 +31,7 @@ use MetaModels\Attribute\IAttribute;
 use MetaModels\AttributeTranslatedCheckboxBundle\Attribute\TranslatedCheckbox;
 use MetaModels\CoreBundle\Assets\IconBuilder;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
+use MetaModels\TranslatedMetaModel;
 
 /**
  * This class creates the default instances for property conditions when generating input screens.
@@ -147,7 +148,10 @@ class BuildMetaModelOperationsListener
     ) {
         $commandName = 'publishtranslatedcheckboxtoggle_' . $attribute->getColName();
 
-        foreach ($attribute->getMetaModel()->getLanguages() as $langCode) {
+        $model = $attribute->getMetaModel();
+        assert($model instanceof TranslatedMetaModel);
+
+        foreach ($model->getLanguages() as $langCode) {
             $this->generateToggleCommand(
                 $commands,
                 $attribute,
@@ -173,7 +177,7 @@ class BuildMetaModelOperationsListener
     {
         $allProps   = $event->getScreen()['properties'];
         $properties = \array_map(
-            static function ($property) {
+            static function (array $property) {
                 return ($property['col_name'] ?? null);
             },
             $allProps
@@ -192,6 +196,7 @@ class BuildMetaModelOperationsListener
                 }
             }
 
+            /** @var TranslatedCheckbox $attribute */
             $container = $event->getContainer();
             if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
                 $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
