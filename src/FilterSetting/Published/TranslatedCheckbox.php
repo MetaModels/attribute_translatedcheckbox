@@ -57,8 +57,10 @@ class TranslatedCheckbox extends MetaModelFilterSetting
         $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
         if ($objAttribute) {
             /** @psalm-suppress DeprecatedMethod */
-            $objFilterRule = new SearchAttribute($objAttribute, '1', $this->getMetaModel()->getActiveLanguage());
+            $language      = $this->getMetaModel()->getActiveLanguage();
+            $objFilterRule = new SearchAttribute($objAttribute, '1', '' !== $language ? $language : 'en');
             $objFilter->addFilterRule($objFilterRule);
+
             return;
         }
         // Attribute not found, do not return anything to prevent leaking of items.

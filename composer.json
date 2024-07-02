@@ -35,21 +35,15 @@
     "php": "^8.1",
     "contao-community-alliance/dc-general": "^2.3",
     "contao/core-bundle": "^4.13.0 <5.0",
-    "metamodels/core": "dev-feature/phpcq-2 as 2.3.0",
+    "metamodels/core": "^2.3@dev",
     "symfony/dependency-injection": "^5.4",
     "symfony/http-kernel": "^5.4"
   },
   "require-dev": {
     "contao/manager-plugin": "^2.1",
-    "menatwork/contao-multicolumnwizard-bundle": "^3.4",
+    "menatwork/contao-multicolumnwizard-bundle": "^3.6.7",
     "phpcq/runner-bootstrap": "^1.0@dev"
   },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://packages.cyberspectrum.de/r"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "MetaModels\\AttributeTranslatedCheckboxBundle\\": "src"
@@ -73,8 +67,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-feature/2.3.0": "2.3.x-dev",
-      "dev-hotfix/phpcq-2": "2.3.x-dev"
+      "dev-feature/2.3.0": "2.3.x-dev"
     },
     "contao-manager-plugin": "MetaModels\\AttributeTranslatedCheckboxBundle\\ContaoManager\\Plugin"
   }
