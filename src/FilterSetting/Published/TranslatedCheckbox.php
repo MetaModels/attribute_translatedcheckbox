@@ -49,7 +49,7 @@ class TranslatedCheckbox extends MetaModelFilterSetting
         // Skip filter when in front end preview.
         if (
             (bool) $this->get('check_allowpreview')
-            && System::getContainer()->get('contao.security.token_checker')?->hasBackendUser()
+            && System::getContainer()->get('contao.security.token_checker')?->isPreviewMode()
         ) {
             return;
         }
