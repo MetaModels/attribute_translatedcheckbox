@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,7 @@
  * @package    MetaModels/attribute_translatedcheckbox
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -22,9 +22,8 @@ namespace MetaModels\AttributeTranslatedCheckboxBundle\Test;
 
 use MetaModels\AttributeTranslatedCheckboxBundle\Attribute\AttributeTypeFactory;
 use MetaModels\AttributeTranslatedCheckboxBundle\Attribute\TranslatedCheckbox;
-use MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published\TranslatedCheckbox as PublishedTranslatedCheckbox;
+use MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published\TranslatedCheckbox as PublishedTransCheckbox;
 use MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published\TranslatedCheckboxFilterSettingTypeFactory;
-
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -39,12 +38,16 @@ class DeprecatedAutoloaderTest extends TestCase
      *
      * @var array
      */
+    /** phpcs:disable */
     private static $classes = [
-        'MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox'                     => TranslatedCheckbox::class,
-        'MetaModels\Attribute\TranslatedCheckbox\AttributeTypeFactory'                   => AttributeTypeFactory::class,
-        'MetaModels\Filter\Setting\Published\TranslatedCheckbox'                         => PublishedTranslatedCheckbox::class,
-        'MetaModels\Filter\Setting\Published\TranslatedCheckboxFilterSettingTypeFactory' => TranslatedCheckboxFilterSettingTypeFactory::class,
+        'MetaModels\Attribute\TranslatedCheckbox\TranslatedCheckbox'   => TranslatedCheckbox::class,
+        'MetaModels\Attribute\TranslatedCheckbox\AttributeTypeFactory' => AttributeTypeFactory::class,
+        'MetaModels\Filter\Setting\Published\TranslatedCheckbox'
+                                                                       => PublishedTransCheckbox::class,
+        'MetaModels\Filter\Setting\Published\TranslatedCheckboxFilterSettingTypeFactory'
+                                                                       => TranslatedCheckboxFilterSettingTypeFactory::class,
     ];
+    /** phpcs:enable */
 
     /**
      * Provide the alias class map.
