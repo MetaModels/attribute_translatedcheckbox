@@ -27,6 +27,7 @@ use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2Ba
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\CommandCollectionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\TranslatedToggleCommand;
+use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\ViewDefinitionInterface;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\AttributeTranslatedCheckboxBundle\Attribute\TranslatedCheckbox;
 use MetaModels\CoreBundle\Assets\IconBuilder;
@@ -175,6 +176,7 @@ class BuildMetaModelOperationsListener
      */
     public function handle(BuildMetaModelOperationsEvent $event)
     {
+        /** @var list<array<string, mixed>> $allProps */
         $allProps   = $event->getScreen()['properties'];
         $properties = \array_map(
             static function (array $property) {
@@ -204,6 +206,7 @@ class BuildMetaModelOperationsListener
                 $view = new Contao2BackendViewDefinition();
                 $container->setDefinition(Contao2BackendViewDefinitionInterface::NAME, $view);
             }
+            assert($view instanceof ViewDefinitionInterface);
             $this->buildCommandsFor($attribute, $view->getModelCommands(), $info);
         }
     }

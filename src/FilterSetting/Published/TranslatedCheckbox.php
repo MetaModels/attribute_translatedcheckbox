@@ -24,6 +24,7 @@
 
 namespace MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published;
 
+use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\System;
 use MetaModels\Filter\IFilter as IMetaModelFilter;
 use MetaModels\Filter\Rules\SearchAttribute;
@@ -47,9 +48,12 @@ class TranslatedCheckbox extends MetaModelFilterSetting
         }
 
         // Skip filter when in front end preview.
+        $tokenChecker = System::getContainer()->get('contao.security.token_checker');
+        assert($tokenChecker instanceof TokenChecker);
+
         if (
             (bool) $this->get('check_allowpreview')
-            && System::getContainer()->get('contao.security.token_checker')?->isPreviewMode()
+            && $tokenChecker->isPreviewMode()
         ) {
             return;
         }
@@ -58,7 +62,7 @@ class TranslatedCheckbox extends MetaModelFilterSetting
         if ($objAttribute) {
             /** @psalm-suppress DeprecatedMethod */
             $language      = $this->getMetaModel()->getActiveLanguage();
-            $objFilterRule = new SearchAttribute($objAttribute, '1', '' !== $language ? $language : 'en');
+            $objFilterRule = new SearchAttribute($objAttribute, '1', ['' !== $language ? $language : 'en']);
             $objFilter->addFilterRule($objFilterRule);
 
             return;

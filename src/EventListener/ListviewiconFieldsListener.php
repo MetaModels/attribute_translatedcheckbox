@@ -99,7 +99,7 @@ class ListviewiconFieldsListener
         $newValues = [];
         $languages = $extra['columnFields']['listviewicon_language']['options'];
         foreach (\array_keys($languages) as $key) {
-            if ($thisValue = ($value[$key] ?? null)) {
+            if (null !== ($thisValue = ($value[$key] ?? null))) {
                 $newValues[] = [
                     'listviewicon_language'       => $key,
                     'tcheck_listviewicon'         => $thisValue['tcheck_listviewicon'],
