@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_attribute.en.xlf">
+    <body>
+      <trans-unit id="typeOptions.translatedcheckbox" resname="typeOptions.translatedcheckbox">
+        <source>Translated checkbox</source>
+      </trans-unit>
+      <trans-unit id="check_publish.label" resname="check_publish.label">
+        <source>Toggle icon</source>
+      </trans-unit>
+      <trans-unit id="check_publish.description" resname="check_publish.description">
+        <source>If this is selected, you will get a toggle icon (&quot;eye&quot;) in the backend list view.</source>
+      </trans-unit>
+      <trans-unit id="tcheck_inverse.label" resname="tcheck_inverse.label">
+        <source>Inverse</source>
+      </trans-unit>
+      <trans-unit id="tcheck_inverse.description" resname="tcheck_inverse.description">
+        <source>If this is selected, the toggle mode will get inverted (enabled checkbox shows inactive icon, disabled checkbox shows active icon).</source>
+      </trans-unit>
+      <trans-unit id="tcheck_listview.label" resname="tcheck_listview.label">
+        <source>Custom icon image</source>
+      </trans-unit>
+      <trans-unit id="tcheck_listview.description" resname="tcheck_listview.description">
+        <source>If this is selected, you can customize the icon in the backend list view.</source>
+      </trans-unit>
+      <trans-unit id="tcheck_listviewicon_fields.label" resname="tcheck_listviewicon_fields.label">
+        <source>Custom icons for enabled and disabled state</source>
+      </trans-unit>
+      <trans-unit id="tcheck_listviewicon_fields.description" resname="tcheck_listviewicon_fields.description">
+        <source>You can choose your own icons for enabled and disabled state.</source>
+      </trans-unit>
+      <trans-unit id="listviewicon_language.label" resname="listviewicon_language.label">
+        <source>Language</source>
+      </trans-unit>
+      <trans-unit id="tcheck_listviewicon.label" resname="tcheck_listviewicon.label">
+        <source>Icon for enabled state</source>
+      </trans-unit>
+      <trans-unit id="tcheck_listviewicon.description" resname="tcheck_listviewicon.description">
+        <source>The icon which is shown in the backend list view if item enabled.</source>
+      </trans-unit>
+      <trans-unit id="tcheck_listviewicondisabled.label" resname="tcheck_listviewicondisabled.label">
+        <source>Icon for disabled state</source>
+      </trans-unit>
+      <trans-unit id="tcheck_listviewicondisabled.description" resname="tcheck_listviewicondisabled.description">
+        <source>The icon which is shown in the backend list view if item disabled.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
