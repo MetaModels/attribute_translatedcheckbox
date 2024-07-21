@@ -1,0 +1,14 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="src/Resources/translations/metamodels_default.en.xlf" target-language="de">
+    <body>
+      <trans-unit id="toggle.label" resname="toggle.label">
+        <source>Toggle</source>
+        <target>Wechseln</target>
+      </trans-unit>
+      <trans-unit id="toggle.description" resname="toggle.description">
+        <source>Toggle the state of attribute %name% for this item</source>
+        <target>Umschaltung des Status für Attribut %name% des Datensatzes.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

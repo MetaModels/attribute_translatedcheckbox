@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,8 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -25,32 +26,34 @@
 
 // @codingStandardsIgnoreStart Line exceed 120 characters
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['translatedcheckbox_published extends _attribute_']['+config'] =
-[
-    'check_ignorepublished',
-    'check_allowpreview'
-];
+    [
+        'check_ignorepublished',
+        'check_allowpreview'
+    ];
 // @codingStandardsIgnoreEnd
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_ignorepublished'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_ignorepublished'],
-    'exclude'                 => true,
-    'inputType'               => 'checkbox',
-    'sql'                     => 'char(1) NOT NULL default \'\'',
-    'eval'                    => [
-        'alwaysSave'          => true,
-        'tl_class'            => 'w50 m12',
+    'label'       => 'check_ignorepublished.label',
+    'description' => 'check_ignorepublished.description',
+    'exclude'     => true,
+    'inputType'   => 'checkbox',
+    'sql'         => 'char(1) NOT NULL default \'\'',
+    'eval'        => [
+        'alwaysSave' => true,
+        'tl_class'   => 'w50 m12',
     ],
-    'sql'                     => 'char(1) NOT NULL default \'\''
+    'sql'         => 'char(1) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['check_allowpreview'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['check_allowpreview'],
-    'exclude'                 => true,
-    'inputType'               => 'checkbox',
-    'sql'                     => 'char(1) NOT NULL default \'\'',
-    'eval'                    => [
-        'alwaysSave'          => true,
-        'tl_class'            => 'w50 m12',
+    'label'       => 'check_allowpreview.label',
+    'description' => 'check_allowpreview.description',
+    'exclude'     => true,
+    'inputType'   => 'checkbox',
+    'sql'         => 'char(1) NOT NULL default \'\'',
+    'eval'        => [
+        'alwaysSave' => true,
+        'tl_class'   => 'w50 m12',
     ],
-    'sql'                     => 'char(1) NOT NULL default \'\''
+    'sql'         => 'char(1) NOT NULL default \'\''
 ];

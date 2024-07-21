@@ -23,6 +23,7 @@
 namespace MetaModels\AttributeTranslatedCheckboxBundle\EventListener;
 
 use Contao\FilesModel;
+use Contao\System;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinition;
 use ContaoCommunityAlliance\DcGeneral\Contao\DataDefinition\Definition\Contao2BackendViewDefinitionInterface;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\View\CommandCollectionInterface;
@@ -33,6 +34,7 @@ use MetaModels\AttributeTranslatedCheckboxBundle\Attribute\TranslatedCheckbox;
 use MetaModels\CoreBundle\Assets\IconBuilder;
 use MetaModels\DcGeneral\Events\MetaModel\BuildMetaModelOperationsEvent;
 use MetaModels\TranslatedMetaModel;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This class creates the default instances for property conditions when generating input screens.
@@ -83,18 +85,18 @@ class BuildMetaModelOperationsListener
         array $propertyData
     ) {
         if (!$commands->hasCommandNamed($commandName)) {
+
+            $translator = System::getContainer()->get('translator');
+            assert($translator instanceof TranslatorInterface);
+
             $toggle = new TranslatedToggleCommand();
             $toggle
                 ->setLanguage($language)
                 ->setToggleProperty($attribute->getColName())
                 ->setName($commandName)
-                ->setLabel($GLOBALS['TL_LANG']['MSC']['metamodelattribute_translatedcheckbox']['toggle'][0])
+                ->setLabel($translator->trans('toggle.label', [], 'metamodels_default'))
                 ->setDescription(
-                    \sprintf(
-                        $GLOBALS['TL_LANG']['MSC']['metamodelattribute_translatedcheckbox']['toggle'][1],
-                        $attribute->getName(),
-                        $language
-                    )
+                    $translator->trans('toggle.description', ['name' => $attribute->getName()], 'metamodels_default')
                 );
 
             $extra          = $toggle->getExtra();

@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcheckbox.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcheckbox/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -70,54 +70,59 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['dca_config']['childCondition'][] =
  */
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['check_publish'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['check_publish'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'eval'      => ['tl_class' => 'w50 cbx m12'],
-    'sql'       => 'char(1) NOT NULL default \'\''
+    'label'       => 'check_publish.label',
+    'description' => 'check_publish.description',
+    'exclude'     => true,
+    'inputType'   => 'checkbox',
+    'eval'        => ['tl_class' => 'w50 cbx m12'],
+    'sql'         => 'char(1) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['tcheck_inverse'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['tcheck_inverse'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => [
+    'label'       => 'tcheck_inverse.label',
+    'description' => 'tcheck_inverse.description',
+    'exclude'     => true,
+    'inputType'   => 'checkbox',
+    'sql'         => 'char(1) NOT NULL default \'\'',
+    'eval'        => [
         'tl_class' => 'w50 cbx m12'
     ],
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['tcheck_listview'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['tcheck_listview'],
-    'exclude'   => true,
-    'inputType' => 'checkbox',
-    'sql'       => 'char(1) NOT NULL default \'\'',
-    'eval'      => [
+    'label'       => 'tcheck_listview.label',
+    'description' => 'tcheck_listview.description',
+    'exclude'     => true,
+    'inputType'   => 'checkbox',
+    'sql'         => 'char(1) NOT NULL default \'\'',
+    'eval'        => [
         'tl_class'       => 'clr w50 cbx m12',
         'submitOnChange' => true
     ],
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['tcheck_listviewicon_fields'] = [
-    'label'          => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['tcheck_listviewicon_fields'],
+    'label'          => 'tcheck_listviewicon_fields.label',
+    'description'    => 'tcheck_listviewicon_fields.description',
     'exclude'        => true,
     'minCount'       => 1,
     'maxCount'       => 1,
     'disableSorting' => '1',
     'inputType'      => 'multiColumnWizard',
     'eval'           => [
-        'dragAndDrop'  => false,
-        'hideButtons'  => true,
-        'tl_class'     => 'clr clx w50',
-        'columnFields' => [
-            'listviewicon_language'       => [
-                'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['listviewicon_language'],
+        'useTranslator' => true,
+        'dragAndDrop'   => false,
+        'hideButtons'   => true,
+        'tl_class'      => 'clr clx w50',
+        'columnFields'  => [
+            'listviewicon_language'         => [
+                'label'     => 'listviewicon_language.label',
                 'exclude'   => true,
                 'inputType' => 'justtextoption',
                 'eval'      => ['valign' => 'center']
             ],
             'tcheck_listviewicon'         => [
-                'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['tcheck_listviewicon'],
+                'label'     => 'tcheck_listviewicon.label',
                 'exclude'   => true,
                 'inputType' => 'fileTree',
                 'eval'      => [
@@ -129,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_attribute']['fields']['tcheck_listviewicon_fiel
                 ]
             ],
             'tcheck_listviewicondisabled' => [
-                'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_attribute']['tcheck_listviewicondisabled'],
+                'label'     => 'tcheck_listviewicondisabled.label',
                 'exclude'   => true,
                 'inputType' => 'fileTree',
                 'eval'      => [
