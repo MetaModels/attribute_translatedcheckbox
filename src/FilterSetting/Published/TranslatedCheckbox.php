@@ -30,6 +30,7 @@ use MetaModels\Filter\IFilter as IMetaModelFilter;
 use MetaModels\Filter\Rules\SearchAttribute;
 use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
 use MetaModels\Filter\Setting\Simple as MetaModelFilterSetting;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Filter setting to filter for translated checkboxes.
@@ -95,16 +96,23 @@ class TranslatedCheckbox extends MetaModelFilterSetting
             return [];
         }
 
-        $arrLabel = [];
-        foreach ($GLOBALS['TL_LANG']['MSC']['metamodel_filtersetting']['ignore_published'] as $strLabel) {
-            $arrLabel[] = \sprintf($strLabel, $objAttribute->getName());
-        }
+        $translator = System::getContainer()->get('translator');
+        assert($translator instanceof TranslatorInterface);
 
         return [
             'ignore_published' . $this->get('id') =>
                 [
-                    'label'     => $arrLabel,
-                    'inputType' => 'checkbox',
+                    'label'       => $translator->trans(
+                        'ignore_published.label',
+                        ['name' => $attribute->getName()],
+                        'tl_metamodel_filtersetting'
+                    ),
+                    'description' => $translator->trans(
+                        'ignore_published.description',
+                        ['name' => $attribute->getName()],
+                        'tl_metamodel_filtersetting'
+                    ),
+                    'inputType'   => 'checkbox',
                 ]
         ];
     }
