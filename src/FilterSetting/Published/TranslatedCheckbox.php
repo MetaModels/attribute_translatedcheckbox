@@ -92,7 +92,7 @@ class TranslatedCheckbox extends MetaModelFilterSetting
             return [];
         }
 
-        if (null === $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'))) {
+        if (null === $attribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'))) {
             return [];
         }
 
