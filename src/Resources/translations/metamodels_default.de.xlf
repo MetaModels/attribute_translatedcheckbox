@@ -6,8 +6,8 @@
         <target>Wechseln</target>
       </trans-unit>
       <trans-unit id="toggle.description" resname="toggle.description">
-        <source>Toggle the state of attribute %name% for this item</source>
-        <target>Umschaltung des Status für Attribut %name% des Datensatzes.</target>
+        <source>Toggle the state of attribute %id% for this item</source>
+        <target>Umschaltung des Status für Attribut %id% des Datensatzes.</target>
       </trans-unit>
     </body>
   </file>
