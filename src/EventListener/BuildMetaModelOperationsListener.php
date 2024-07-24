@@ -85,41 +85,35 @@ class BuildMetaModelOperationsListener
         array $propertyData
     ) {
         if (!$commands->hasCommandNamed($commandName)) {
-
-            $translator = System::getContainer()->get('translator');
-            assert($translator instanceof TranslatorInterface);
-
             $toggle = new TranslatedToggleCommand();
             $toggle
                 ->setLanguage($language)
                 ->setToggleProperty($attribute->getColName())
                 ->setName($commandName)
-                ->setLabel($translator->trans('toggle.label', [], 'metamodels_default'))
-                ->setDescription(
-                    $translator->trans('toggle.description', ['name' => $attribute->getName()], 'metamodels_default')
-                );
+                ->setLabel($commandName . '.label')
+                ->setDescription($commandName . '.description');
 
             $extra          = $toggle->getExtra();
             $extra['icon']  = 'visible.svg';
             $extra['class'] = $class;
             $info           = null;
 
-            $objIconEnabled  = FilesModel::findByUuid(
-                $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicon'] ?? ''
-            );
-            $objIconDisabled = FilesModel::findByUuid(
-                $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicondisabled'] ?? ''
-            );
-
-            if ($attribute->get('tcheck_listview') === 1 && null !== $objIconEnabled && $objIconEnabled->path) {
-                $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
+            if ($attribute->get('tcheck_listview') === '1') {
+                $objIconEnabled  = FilesModel::findByUuid(
+                    $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicon'] ?? ''
+                );
+                $objIconDisabled = FilesModel::findByUuid(
+                    $attribute->get('tcheck_listviewicon_fields')[$language]['tcheck_listviewicondisabled'] ?? ''
+                );
+                if (null !== $objIconEnabled && $objIconEnabled->path) {
+                    $extra['icon'] = $this->iconBuilder->getBackendIcon($objIconEnabled->path);
+                }
+                if (null !== $objIconDisabled && $objIconDisabled->path) {
+                    $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
+                }
             }
 
-            if ($attribute->get('tcheck_listview') === 1 && null !== $objIconDisabled && $objIconDisabled->path) {
-                $extra['icon_disabled'] = $this->iconBuilder->getBackendIcon($objIconDisabled->path);
-            }
-
-            if ($attribute->get('tcheck_inverse') === 1) {
+            if ($attribute->get('tcheck_inverse') === '1') {
                 $toggle->setInverse(true);
             }
 
@@ -147,9 +141,10 @@ class BuildMetaModelOperationsListener
     protected function buildCommandsFor(
         TranslatedCheckbox $attribute,
         CommandCollectionInterface $commands,
-        array $propertyData
+        array $propertyData,
+        string $prefix
     ) {
-        $commandName = 'publishtranslatedcheckboxtoggle_' . $attribute->getColName();
+        $commandName = $prefix . 'publishtranslatedcheckboxtoggle_' . $attribute->getColName();
 
         $model = $attribute->getMetaModel();
         assert($model instanceof TranslatedMetaModel);
@@ -179,14 +174,16 @@ class BuildMetaModelOperationsListener
     public function handle(BuildMetaModelOperationsEvent $event)
     {
         /** @var list<array<string, mixed>> $allProps */
-        $allProps   = $event->getScreen()['properties'];
-        $properties = \array_map(
+        $inputScreen = $event->getScreen();
+        $allProps    = $inputScreen['properties'];
+        $properties  = \array_map(
             static function (array $property) {
                 return ($property['col_name'] ?? null);
             },
             $allProps
         );
 
+        $prefix = 'inputscreen.' . $inputScreen['meta']['id'] . '.';
         foreach ($event->getMetaModel()->getAttributes() as $attribute) {
             if (!$this->wantToAdd($attribute, $properties)) {
                 continue;
@@ -209,7 +206,7 @@ class BuildMetaModelOperationsListener
                 $container->setDefinition(Contao2BackendViewDefinitionInterface::NAME, $view);
             }
             assert($view instanceof ViewDefinitionInterface);
-            $this->buildCommandsFor($attribute, $view->getModelCommands(), $info);
+            $this->buildCommandsFor($attribute, $view->getModelCommands(), $info, $prefix);
         }
     }
 

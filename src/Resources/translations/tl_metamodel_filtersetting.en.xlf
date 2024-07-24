@@ -3,7 +3,7 @@
   <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_filtersetting.en.xlf">
     <body>
       <trans-unit id="typenames.translatedcheckbox_published" resname="typenames.translatedcheckbox_published">
-        <source>Translated published state</source>
+        <source>Translated checkbox state</source>
       </trans-unit>
       <trans-unit id="check_ignorepublished.label" resname="check_ignorepublished.label">
         <source>Allow parameter override</source>
