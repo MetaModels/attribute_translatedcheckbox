@@ -6,8 +6,8 @@
         <target>Wechseln</target>
       </trans-unit>
       <trans-unit id="toggle.description" resname="toggle.description">
-        <source>Toggle the state of attribute "%name%" for item %id% in language "%lang%"</source>
-        <target>Wechselt den Status des Attributs "%name%" für Datensatz %id% in Sprache "%lang%"</target>
+        <source>Toggle the state of attribute &quot;%name%&quot; for item %id% in language &quot;%lang%&quot;</source>
+        <target>Wechseln des Status für Attribut &quot;%name%&quot; des Datensdatzes %id% in Sprache &quot;%lang%&quot;</target>
       </trans-unit>
     </body>
   </file>
