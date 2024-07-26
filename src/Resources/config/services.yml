@@ -11,3 +11,9 @@ services:
         class: MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published\TranslatedCheckboxFilterSettingTypeFactory
         tags:
             - { name: metamodels.filter_factory }
+
+    MetaModels\AttributeTranslatedCheckboxBundle\Translator\TranslationLoader:
+      arguments:
+        $baseTranslator: '@contao.translation.translator'
+        $builder: '@metamodels.view_combination.input_screen_information_builder'
+      tags: [ { name: metamodels.translation-loader } ]
