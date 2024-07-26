@@ -173,10 +173,10 @@ class BuildMetaModelOperationsListener
      */
     public function handle(BuildMetaModelOperationsEvent $event)
     {
-        /** @var list<array<string, mixed>> $allProps */
         $inputScreen = $event->getScreen();
-        $allProps    = $inputScreen['properties'];
-        $properties  = \array_map(
+        /** @var list<array<string, mixed>> $allProps */
+        $allProps   = $inputScreen['properties'];
+        $properties = \array_map(
             static function (array $property) {
                 return ($property['col_name'] ?? null);
             },
@@ -188,6 +188,7 @@ class BuildMetaModelOperationsListener
             if (!$this->wantToAdd($attribute, $properties)) {
                 continue;
             }
+            assert($attribute instanceof TranslatedCheckbox);
 
             $info = [];
             foreach ($allProps as $prop) {
@@ -197,7 +198,6 @@ class BuildMetaModelOperationsListener
                 }
             }
 
-            /** @var TranslatedCheckbox $attribute */
             $container = $event->getContainer();
             if ($container->hasDefinition(Contao2BackendViewDefinitionInterface::NAME)) {
                 $view = $container->getDefinition(Contao2BackendViewDefinitionInterface::NAME);
