@@ -30,6 +30,7 @@ use MetaModels\Filter\IFilter as IMetaModelFilter;
 use MetaModels\Filter\Rules\SearchAttribute;
 use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
 use MetaModels\Filter\Setting\Simple as MetaModelFilterSetting;
+use MetaModels\ITranslatedMetaModel;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -61,8 +62,13 @@ class TranslatedCheckbox extends MetaModelFilterSetting
 
         $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
         if ($objAttribute) {
-            /** @psalm-suppress DeprecatedMethod */
-            $language      = $this->getMetaModel()->getActiveLanguage();
+            $metaModel = $this->getMetaModel();
+            if ($metaModel instanceof ITranslatedMetaModel) {
+                $language = $metaModel->getLanguage();
+            } else {
+                /** @psalm-suppress DeprecatedMethod */
+                $language = $this->getMetaModel()->getActiveLanguage();
+            }
             $objFilterRule = new SearchAttribute($objAttribute, '1', ['' !== $language ? $language : 'en']);
             $objFilter->addFilterRule($objFilterRule);
 
