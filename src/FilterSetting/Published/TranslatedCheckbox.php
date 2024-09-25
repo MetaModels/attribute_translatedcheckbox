@@ -26,11 +26,14 @@ namespace MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\System;
-use MetaModels\Filter\IFilter as IMetaModelFilter;
+use MetaModels\Filter\FilterUrlBuilder;
+use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\SearchAttribute;
-use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
-use MetaModels\Filter\Setting\Simple as MetaModelFilterSetting;
+use MetaModels\Filter\Rules\StaticIdList;
+use MetaModels\Filter\Setting\ICollection;
+use MetaModels\Filter\Setting\Simple;
 use MetaModels\ITranslatedMetaModel;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -38,25 +41,54 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @covers \MetaModels\AttributeTranslatedCheckboxBundle\Attribute\TranslatedCheckbox
  */
-class TranslatedCheckbox extends MetaModelFilterSetting
+class TranslatedCheckbox extends Simple
 {
+    private readonly TokenChecker $tokenChecker;
+
+    /**
+     * Constructor - initialize the object and store the parameters.
+     *
+     * @param ICollection                   $collection       The parenting filter settings object.
+     * @param array                         $data             The attributes for this filter setting.
+     * @param EventDispatcherInterface|null $eventDispatcher  The event dispatcher.
+     * @param FilterUrlBuilder|null         $filterUrlBuilder The filter URL builder.
+     * @param TranslatorInterface|null      $translator       The translator.
+     * @param TokenChecker|null             $tokenChecker     The token checker.
+     */
+    public function __construct(
+        $collection,
+        $data,
+        ?EventDispatcherInterface $eventDispatcher = null,
+        ?FilterUrlBuilder $filterUrlBuilder = null,
+        ?TranslatorInterface $translator = null,
+        ?TokenChecker $tokenChecker = null,
+    ) {
+        parent::__construct($collection, $data, $eventDispatcher, $filterUrlBuilder, $translator);
+        if (null === $tokenChecker) {
+            // @codingStandardsIgnoreStart
+            @trigger_error(
+                'Token checker is not passed as constructor argument.',
+                E_USER_DEPRECATED
+            );
+            // @codingStandardsIgnoreEnd
+
+            $tokenChecker = System::getContainer()->get('contao.security.token_checker');
+            assert($tokenChecker instanceof TokenChecker);
+        }
+        $this->tokenChecker = $tokenChecker;
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
+    public function prepareRules(IFilter $objFilter, $arrFilterUrl)
     {
         if ((bool) $this->get('check_ignorepublished') && $arrFilterUrl['ignore_published' . $this->get('id')]) {
             return;
         }
 
         // Skip filter when in front end preview.
-        $tokenChecker = System::getContainer()->get('contao.security.token_checker');
-        assert($tokenChecker instanceof TokenChecker);
-
-        if (
-            (bool) $this->get('check_allowpreview')
-            && $tokenChecker->isPreviewMode()
-        ) {
+        if ((bool) $this->get('check_allowpreview') && $this->tokenChecker->isPreviewMode()) {
             return;
         }
 
@@ -75,7 +107,7 @@ class TranslatedCheckbox extends MetaModelFilterSetting
             return;
         }
         // Attribute not found, do not return anything to prevent leaking of items.
-        $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList([]));
+        $objFilter->addFilterRule(new StaticIdList([]));
     }
 
     /**

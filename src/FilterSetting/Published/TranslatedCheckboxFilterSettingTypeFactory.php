@@ -22,6 +22,7 @@
 
 namespace MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published;
 
+use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -41,6 +42,7 @@ class TranslatedCheckboxFilterSettingTypeFactory extends AbstractFilterSettingTy
         private readonly EventDispatcherInterface $dispatcher,
         private readonly FilterUrlBuilder $filterUrlBuilder,
         private readonly TranslatorInterface $translator,
+        private readonly TokenChecker $tokenChecker,
     ) {
         parent::__construct();
         $this
@@ -58,6 +60,7 @@ class TranslatedCheckboxFilterSettingTypeFactory extends AbstractFilterSettingTy
             $this->dispatcher,
             $this->filterUrlBuilder,
             $this->translator,
+            $this->tokenChecker,
         );
     }
 }
