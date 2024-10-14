@@ -23,10 +23,14 @@
 
 namespace MetaModels\AttributeTranslatedCheckboxBundle\Attribute;
 
+use Contao\System;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Query\QueryBuilder;
+use MetaModels\Attribute\ITranslated;
 use MetaModels\Attribute\TranslatedReference;
 use MetaModels\Filter\Rules\SimpleQuery;
+use MetaModels\ITranslatedMetaModel;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This is the MetaModelAttribute class for handling translated checkbox fields.
@@ -84,6 +88,59 @@ class TranslatedCheckbox extends TranslatedReference
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-suppress DeprecatedMethod
+     */
+    public function getFilterOptions($idList, $usedOnly, &$arrCount = null)
+    {
+        // If empty list, return empty result.
+        if (null === $idList || [] === $idList) {
+            return [];
+        }
+
+        $metaModel = $this->getMetaModel();
+        if ($metaModel instanceof ITranslatedMetaModel) {
+            $currentLanguage = $metaModel->getLanguage();
+        } else {
+            $currentLanguage = $metaModel->getActiveLanguage();
+        }
+        assert('' !== $currentLanguage);
+
+        $values = [];
+        // If not used only, we need to override the handling now.
+        if (!$usedOnly) {
+            $values = ['', '1'];
+        } else {
+            $listActive   = $this->searchForInLanguages('1', [$currentLanguage]) ?? [];
+            $listInactive = $this->searchForInLanguages('', [$currentLanguage]) ?? [];
+
+            if (\count(\array_intersect($idList, $listInactive))) {
+                $values[] = '';
+            }
+            if (\count(\array_intersect($idList, $listActive))) {
+                $values[] = '1';
+            }
+        }
+
+        $translator = System::getContainer()->get('translator');
+        assert($translator instanceof TranslatorInterface);
+
+        // Finally use the correct language strings.
+        $mapped = [];
+        foreach ($values as $value) {
+            $mapped[$value] =
+                $translator->trans(
+                    'checkbox.value_' . ($value ?: '0'),
+                    ['%language%' => \strtoupper($currentLanguage)],
+                    'metamodel_translatedcheckbox'
+                );
+        }
+
+        return $mapped;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function getTranslatedDataFor($arrIds, $strLangCode)
     {
@@ -105,23 +162,28 @@ class TranslatedCheckbox extends TranslatedReference
     public function searchForInLanguages($strPattern, $arrLanguages = [])
     {
         $optionizer = $this->getOptionizer();
-        $procedure  = 't.' . $optionizer['value'] . ' LIKE :pattern';
-        $strPattern = \str_replace(['*', '?'], ['%', '_'], $strPattern);
+        $procedure  = 't.' . $optionizer['value'] . '=:value';
+        $strPattern = (bool) $strPattern ? '1' : '';
 
-        // If option inverse on.
+        // If option inverse on - reverse pattern.
         if ($this->get('tcheck_inverse')) {
+            $strPattern = $strPattern ? '' : '1';
+        }
+
+        // Search for inactive.
+        if ('' === $strPattern) {
             $queryBuilderSub = $this->connection->createQueryBuilder()
                 ->select('DISTINCT t.item_id')
                 ->from($this->getValueTable(), 't')
-                ->andWhere($procedure);
+                ->andWhere($procedure)
+                ->setParameter('value', '1');
 
             $this->buildWhere($queryBuilderSub, null, $arrLanguages, 't');
 
             $queryBuilder = $this->connection->createQueryBuilder();
             $queryBuilder->select('t2.id')
                 ->from($this->getMetaModel()->getTableName(), 't2')
-                ->where($queryBuilder->expr()->notIn('t2.id', $queryBuilderSub->getSQL()))
-                ->setParameter('pattern', $strPattern);
+                ->where($queryBuilder->expr()->notIn('t2.id', $queryBuilderSub->getSQL()));
             foreach ($queryBuilderSub->getParameters() as $name => $value) {
                 $queryBuilder->setParameter($name, $value, $queryBuilderSub->getParameterType($name));
             }
@@ -129,16 +191,30 @@ class TranslatedCheckbox extends TranslatedReference
             return SimpleQuery::createFromQueryBuilder($queryBuilder, 'id')->getMatchingIds();
         }
 
-        // If option inverse off.
+        // Search for active.
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('DISTINCT t.item_id')
             ->from($this->getValueTable(), 't')
             ->andWhere($procedure)
-            ->setParameter('pattern', $strPattern);
+            ->setParameter('value', $strPattern);
 
         $this->buildWhere($queryBuilder, null, $arrLanguages, 't');
 
         return SimpleQuery::createFromQueryBuilder($queryBuilder, 'item_id')->getMatchingIds();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function sortIds($idList, $strDirection)
+    {
+        $sortedList = parent::sortIds($idList, $strDirection);
+
+        $zeros = \array_diff($idList, $sortedList);
+
+        return \strtoupper($strDirection) === 'ASC'
+            ? \array_merge($zeros, $sortedList)
+            : \array_merge($sortedList, $zeros);
     }
 
     /**
