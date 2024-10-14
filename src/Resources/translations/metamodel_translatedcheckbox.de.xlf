@@ -9,6 +9,14 @@
         <source>Toggle the state of attribute &quot;%name%&quot; for item %id% in language &quot;%lang%&quot;</source>
         <target>Wechseln des Status für Attribut &quot;%name%&quot; des Datensdatzes %id% in Sprache &quot;%lang%&quot;</target>
       </trans-unit>
+      <trans-unit id="checkbox.value_0" resname="checkbox.value_0">
+        <source>Inactive [%language%]</source>
+        <target>Inaktiv [%language%]</target>
+      </trans-unit>
+      <trans-unit id="checkbox.value_1" resname="checkbox.value_1">
+        <source>Active [%language%]</source>
+        <target>Aktiv [%language%]</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
