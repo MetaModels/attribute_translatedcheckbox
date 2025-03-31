@@ -22,7 +22,11 @@
 
 namespace MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published;
 
+use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
+use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Attribute type factory for translated checkbox published filter settings.
@@ -34,13 +38,29 @@ class TranslatedCheckboxFilterSettingTypeFactory extends AbstractFilterSettingTy
     /**
      * {@inheritDoc}
      */
-    public function __construct()
-    {
+    public function __construct(
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly FilterUrlBuilder $filterUrlBuilder,
+        private readonly TranslatorInterface $translator,
+        private readonly TokenChecker $tokenChecker,
+    ) {
         parent::__construct();
         $this
             ->setTypeName('translatedcheckbox_published')
             ->setTypeIcon('bundles/metamodelscore/visible.png')
             ->setTypeClass(TranslatedCheckbox::class)
             ->allowAttributeTypes('translatedcheckbox');
+    }
+
+    public function createInstance($information, $filterSettings)
+    {
+        return new TranslatedCheckbox(
+            $filterSettings,
+            $information,
+            $this->dispatcher,
+            $this->filterUrlBuilder,
+            $this->translator,
+            $this->tokenChecker,
+        );
     }
 }

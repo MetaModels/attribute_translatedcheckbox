@@ -8,6 +8,25 @@ services:
             - { name: metamodels.attribute_factory }
 
     netzmacht.attribute_translated_checkbox.filter_setting_factory:
-        class: MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published\TranslatedCheckboxFilterSettingTypeFactory
-        tags:
+        alias: '@MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published\TranslatedCheckboxFilterSettingTypeFactory'
+        deprecated:
+            package: metamodels/attribute_translatedcheckbox
+            version: 2.3
+            message:
+                The service "%service_id%" is deprecated and to be removed in MetaModels 3 - The name was never correct.
+                Use the '%alias_id%' service instead.
+
+    MetaModels\AttributeTranslatedCheckboxBundle\FilterSetting\Published\TranslatedCheckboxFilterSettingTypeFactory:
+      arguments:
+        - '@event_dispatcher'
+        - '@MetaModels\Filter\FilterUrlBuilder'
+        - '@translator'
+        - '@contao.security.token_checker'
+      tags:
             - { name: metamodels.filter_factory }
+
+    MetaModels\AttributeTranslatedCheckboxBundle\Translator\TranslationLoader:
+      arguments:
+        $baseTranslator: '@contao.translation.translator'
+        $builder: '@metamodels.view_combination.input_screen_information_builder'
+      tags: [ { name: metamodels.translation-loader } ]
